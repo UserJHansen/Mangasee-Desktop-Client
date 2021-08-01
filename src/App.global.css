@@ -1,0 +1,111 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+button {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  appearance: none;
+  font-size: 1.3rem;
+  box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
+    0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+  transition: transform ease-in 0.1s;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  height: fit-content;
+  width: fit-content;
+  margin: 10px;
+}
+
+a:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+html {
+  --rotation: 180deg;
+  --nrotation: -180deg;
+  background: linear-gradient(
+    124deg,
+    #47c2ff,
+    #adeaa9,
+    #473a99,
+    #df9502,
+    #f75224
+  );
+  background-size: 1000% 1000%;
+  animation: Colour 80s linear infinite, Animate 40s ease-in-out infinite;
+  overflow: hidden;
+}
+body {
+  position: relative;
+  color: white;
+  height: 100vh;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  background: none;
+  animation: AntiAnimate 40s ease-in-out infinite;
+}
+@keyframes Colour {
+  0% {
+    background-position: 0% 10%;
+  }
+  50% {
+    background-position: 100% 91%;
+  }
+  100% {
+    background-position: 0% 10%;
+  }
+}
+@keyframes Animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(var(--rotation));
+  }
+  100% {
+    transform: rotate(var(--nrotation));
+  }
+}
+@keyframes AntiAnimate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(var(--nrotation));
+  }
+  100% {
+    transform: rotate(var(--rotation));
+  }
+}
+
+.box {
+  padding: 50px;
+  border-radius: 50px;
+  color: #000;
+  background-color: #fff;
+}
+
+.centered {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: table;
+  text-align: center;
+}
