@@ -2,6 +2,9 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
+
+@import 'animations';
+
 button {
   background-color: white;
   padding: 10px 20px;
@@ -35,7 +38,7 @@ a:hover {
   text-decoration: none;
 }
 
-html {
+.spin {
   --rotation: 180deg;
   --nrotation: -180deg;
   background: linear-gradient(
@@ -50,7 +53,7 @@ html {
   animation: Colour 80s linear infinite, Animate 40s ease-in-out infinite;
   overflow: hidden;
 }
-body {
+.spinrev {
   position: relative;
   color: white;
   height: 100vh;
@@ -71,28 +74,6 @@ body {
   }
   100% {
     background-position: 0% 10%;
-  }
-}
-@keyframes Animate {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(var(--rotation));
-  }
-  100% {
-    transform: rotate(var(--nrotation));
-  }
-}
-@keyframes AntiAnimate {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(var(--nrotation));
-  }
-  100% {
-    transform: rotate(var(--rotation));
   }
 }
 

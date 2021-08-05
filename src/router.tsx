@@ -26,7 +26,6 @@ export default class Router extends React.Component<
     const loggedIn = await authentication.isLoggedIn();
     this.setState({
       routes: [
-        // eslint-disable-next-line react/jsx-key
         !loggedIn && (
           <Route key="login" path="/">
             <div className="box centred">
@@ -36,9 +35,7 @@ export default class Router extends React.Component<
         ),
         loggedIn && (
           <Route key="home" path="/">
-            <div className="box centred">
-              <Home />
-            </div>
+            <Home />
           </Route>
         ),
       ],
