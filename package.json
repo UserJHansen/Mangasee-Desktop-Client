@@ -180,7 +180,7 @@
     "concurrently": "^5.3.0",
     "core-js": "^3.6.5",
     "cross-env": "^7.0.2",
-    "css-loader": "^5.0.1",
+    "css-loader": "^6.2.0",
     "css-minimizer-webpack-plugin": "^1.1.5",
     "detect-port": "^1.3.0",
     "electron": "^11.0.1",
@@ -219,6 +219,7 @@
     "rimraf": "^3.0.0",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
+    "stylus": "^0.54.8",
     "terser-webpack-plugin": "^5.0.3",
     "typescript": "^4.0.5",
     "url-loader": "^4.1.0",
@@ -241,7 +242,8 @@
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "regenerator-runtime": "^0.13.5",
-    "source-map-support": "^0.5.19"
+    "source-map-support": "^0.5.19",
+    "typescript-plugin-css-modules": "^3.4.0"
   },
   "devEngines": {
     "node": ">=10.x",

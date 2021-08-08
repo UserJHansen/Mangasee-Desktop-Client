@@ -2,7 +2,7 @@ module.exports = {
   extends: 'erb',
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
-    // 'import/no-extraneous-dependencies': 'off',
+    'import/no-extraneous-dependencies': 'off',
     'jsx-a11y/label-has-associated-control': [
       'error',
       {

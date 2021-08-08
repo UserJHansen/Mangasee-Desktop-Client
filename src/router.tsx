@@ -10,13 +10,30 @@ import Login from './login';
 const authentication = new Authentication();
 
 interface States {
-  routes: unknown[];
+  routes: JSX.Element[];
 }
 
 export default class Router extends React.Component<
   Record<string, unknown>,
   States
 > {
+  static async reloadRoutes(thatThis: Router) {
+    const loggedIn = await authentication.isLoggedIn();
+    thatThis.setState({
+      routes: [
+        loggedIn ? (
+          <Route key="home" path="/">
+            <Home />
+          </Route>
+        ) : (
+          <Route key="login" path="/">
+            <Login onLogin={[thatThis, Router.reloadRoutes]} />
+          </Route>
+        ),
+      ],
+    });
+  }
+
   constructor(props: Record<string, unknown>, states: States) {
     super(props, states);
     this.state = { routes: [] };
@@ -26,16 +43,13 @@ export default class Router extends React.Component<
     const loggedIn = await authentication.isLoggedIn();
     this.setState({
       routes: [
-        !loggedIn && (
-          <Route key="login" path="/">
-            <div className="box centred">
-              <Login />
-            </div>
-          </Route>
-        ),
-        loggedIn && (
+        loggedIn ? (
           <Route key="home" path="/">
             <Home />
+          </Route>
+        ) : (
+          <Route key="login" path="/">
+            <Login onLogin={[this, Router.reloadRoutes]} />
           </Route>
         ),
       ],
@@ -43,10 +57,11 @@ export default class Router extends React.Component<
   }
 
   render() {
+    const { routes } = this.state;
+
     return (
       <BrowserRouter>
-        {/* eslint-disable-next-line react/destructuring-assignment */}
-        <Switch>{this.state.routes}</Switch>
+        <Switch>{routes}</Switch>
       </BrowserRouter>
     );
   }

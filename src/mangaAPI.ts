@@ -1,22 +1,26 @@
-import Store from 'electron-store';
+import axios from 'axios';
 
 export default class MangaAPI {
-  static async checkValidToken(store: Store) {
-    const response = await fetch(
-      'https://mangasee123.com/user/subscription.get.php',
+  static async checkValidToken() {
+    const { data } = await axios.get(
+      'https://mangasee123.com/user/subscription.get.php'
+    );
+    return data.success;
+  }
+
+  static async login(email: string, password: string) {
+    const { data } = await axios.post(
+      'https://mangasee123.com/auth/login.php',
       {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'application/json',
-          cookie:
-            typeof store.get('cookies', '') === 'string'
-              ? <string>store.get('cookies', '')
-              : '',
-        },
+        EmailAddress: email,
+        Password: password,
       }
     );
-    const result = await response.json();
-    return result.success;
+
+    return data.success === true ? data.success : data.val;
+  }
+
+  static async logout() {
+    return axios.get('https://mangasee123.com/auth/logout.php');
   }
 }
