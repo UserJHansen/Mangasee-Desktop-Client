@@ -17,6 +17,10 @@
   overflow: auto;
   background: none;
   animation: AntiAnimate 40s ease-in-out infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 @keyframes Colour {
   0% {

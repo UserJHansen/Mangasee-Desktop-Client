@@ -1,15 +1,8 @@
-import Store from 'electron-store';
-import storageSchema from './storage';
+import Store from './storage';
 import MangaAPI from './mangaAPI';
 
 export default class Authentication {
   private store = new Store();
-
-  constructor() {
-    this.store = new Store({
-      schema: storageSchema,
-    });
-  }
 
   async isLoggedIn() {
     return (

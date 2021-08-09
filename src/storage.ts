@@ -1,13 +1,17 @@
-import { JSONSchema } from 'json-schema-typed';
+import ElectronStore from 'electron-store';
 
-const storage: Record<string, JSONSchema> = {
-  email: {
-    type: 'string',
-    format: 'email',
-  },
-  sessionID: {
-    type: 'string',
-  },
-};
-
-export default storage;
+export default class StorageHandler extends ElectronStore {
+  constructor() {
+    super({
+      schema: {
+        email: {
+          type: 'string',
+          format: 'email',
+        },
+        sessionID: {
+          type: 'string',
+        },
+      },
+    });
+  }
+}

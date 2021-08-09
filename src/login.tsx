@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { shell } from 'electron';
 import Authentication from './Authentication';
+import Store from './storage';
 import animations from './animations.module.scss';
 
 import icon from '../assets/icon.svg';
@@ -10,13 +11,16 @@ export default function Home(props: {
   onLogin: (unknown | (() => Promise<void>))[];
 }) {
   const authentication = new Authentication();
+  const store = new Store();
 
   document.getElementsByTagName('html')[0].classList.add(animations.spin);
   document
     .getElementsByTagName('body')[0]
     .classList.add(animations.spinReverse);
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(
+    typeof store.get('email') === 'string' ? (store.get('email') as string) : ''
+  );
   const [password, setPassword] = useState('');
   const [shouldShowAlert, setShouldShowAlert] = useState(false);
   const [AlertText, setAlertText] = useState('');
@@ -66,13 +70,12 @@ export default function Home(props: {
               document
                 .getElementsByTagName('body')[0]
                 .classList.remove(animations.spinReverse);
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
               if (
                 props.onLogin[0] &&
                 props.onLogin[1] &&
-                typeof props.onLogin[0] === 'function'
+                typeof props.onLogin[1] === 'function'
               )
-                props.onLogin[0](props.onLogin[1]);
+                props.onLogin[1](props.onLogin[0]);
             }
           }}
         >
@@ -97,6 +100,7 @@ export default function Home(props: {
               id="EmailInput"
               placeholder="name@example.com"
               onChange={handleEmailChange}
+              value={email}
               required
             />
           </div>
@@ -111,6 +115,7 @@ export default function Home(props: {
               placeholder="********"
               minLength={5}
               onChange={handlePasswordChange}
+              value={password}
               required
             />
           </div>

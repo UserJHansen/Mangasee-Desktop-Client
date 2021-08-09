@@ -2,7 +2,6 @@ import axios from 'axios';
 
 export default class MangaAPI {
   static async checkValidToken() {
-    this.logout();
     const { data } = await axios.get(
       'https://mangasee123.com/user/subscription.get.php'
     );
