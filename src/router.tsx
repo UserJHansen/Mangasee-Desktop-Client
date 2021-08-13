@@ -1,11 +1,11 @@
-import './App.global.css';
+import './Global/App.global.css';
 
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Authentication from './Authentication';
+import Authentication from './Login/Authentication';
 
-import Home from './home';
-import Login from './login';
+import Home from './Home/home';
+import Login from './Login/login';
 
 const authentication = new Authentication();
 

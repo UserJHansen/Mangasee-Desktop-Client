@@ -2,10 +2,10 @@ import React, { ChangeEvent, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { shell } from 'electron';
 import Authentication from './Authentication';
-import Store from './storage';
+import Store from '../APIs/storage';
 import animations from './animations.module.scss';
 
-import icon from '../assets/icon.svg';
+import icon from '../../assets/icon.svg';
 
 export default function Home(props: {
   onLogin: (unknown | (() => Promise<void>))[];

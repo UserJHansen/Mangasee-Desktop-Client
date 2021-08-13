@@ -1,5 +1,5 @@
-import Store from './storage';
-import MangaAPI from './mangaAPI';
+import Store from '../APIs/storage';
+import MangaAPI from '../APIs/mangaAPI';
 
 export default class Authentication {
   private store = new Store();
