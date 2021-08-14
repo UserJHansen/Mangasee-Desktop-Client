@@ -1,7 +1,7 @@
 import './Global/App.global.css';
 
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Authentication from './Login/Authentication';
 
 import Home from './Home/home';
@@ -22,13 +22,25 @@ export default class Router extends React.Component<
     thatThis.setState({
       routes: [
         loggedIn ? (
-          <Route key="home" path="/">
-            <Home />
-          </Route>
+          <>
+            <Route key="indexhome" exact path="/">
+              <Home />
+            </Route>
+            <Route key="home" path="/home">
+              <Home />
+            </Route>
+            <Redirect key="loginredirect" path="login" to="home" />
+          </>
         ) : (
-          <Route key="login" path="/">
-            <Login onLogin={[thatThis, Router.reloadRoutes]} />
-          </Route>
+          <>
+            <Route key="login" exact path="/">
+              <Login onLogin={[thatThis, Router.reloadRoutes]} />
+            </Route>
+            <Route key="login" path="/login">
+              <Login onLogin={[thatThis, Router.reloadRoutes]} />
+            </Route>
+            <Redirect key="homeredirect" path="home" to="login" />
+          </>
         ),
       ],
     });
@@ -40,29 +52,16 @@ export default class Router extends React.Component<
   }
 
   async componentDidMount() {
-    const loggedIn = await authentication.isLoggedIn();
-    this.setState({
-      routes: [
-        loggedIn ? (
-          <Route key="home" path="/">
-            <Home />
-          </Route>
-        ) : (
-          <Route key="login" path="/">
-            <Login onLogin={[this, Router.reloadRoutes]} />
-          </Route>
-        ),
-      ],
-    });
+    Router.reloadRoutes(this);
   }
 
   render() {
     const { routes } = this.state;
 
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Switch>{routes}</Switch>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }

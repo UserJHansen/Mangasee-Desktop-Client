@@ -6,6 +6,15 @@
 
   background-color: #2b2b2b;
   width: 100%;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.menubar {
+  background-color: #2b2b2b;
+}
+
+.active {
+  color: #fff;
 }
 
 // Modified Code taken from: https://codeconvey.com/Tutorials/expanding-search-bar-jquery/index2.html
@@ -22,8 +31,33 @@
   height: 34px;
   position: relative;
 
-  margin-left: 125px;
+  -webkit-transition: 0.2s 0.5s ease-in-out;
+  -moz-transition: 0.2s 0.5s ease-in-out;
+  -o-transition: 0.2s 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
 }
+
+@media screen and (max-width: 600px) {
+  .expSearchFrom:focus-within {
+    margin-left: calc(50vw - 145px) !important;
+  }
+  .expSearchFrom {
+    margin-left: calc(50vw - 35px);
+  }
+  .logo {
+    margin-left: calc(50vw - 125px);
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .expSearchFrom:focus-within {
+    margin-left: 0px !important;
+  }
+  .logo {
+    margin-left: 5vw;
+  }
+}
+
 .field {
   cursor: pointer;
   border: none;
@@ -86,10 +120,6 @@
 .field:focus + .close span {
   top: 12px;
   right: 5px;
-}
-
-.field:focus + .expSearchFrom {
-  margin-left: 0px !important;
 }
 
 .field:focus + .close span.back {
