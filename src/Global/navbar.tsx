@@ -1,5 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
 import navbarcss from './navbarflex.module.scss';
 import logo from '../../assets/logo.png';
 
@@ -22,10 +24,16 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div>
-          <NavLink to="/home" activeClassName={navbarcss.active}>
-            <i className="fas fa-home" />
-            <span className="d-none d-md-inline">Home</span>
+      </div>
+      <div className={navbarcss.menubar}>
+        <div className={navbarcss.container}>
+          <NavLink
+            to="/home"
+            className={navbarcss.navitem}
+            activeClassName={navbarcss.active}
+          >
+            <FontAwesomeIcon icon={faHome} />
+            <span className="d-md-inline">Home</span>
           </NavLink>
         </div>
       </div>

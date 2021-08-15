@@ -23,20 +23,20 @@ export default class Router extends React.Component<
       routes: [
         loggedIn ? (
           <>
-            <Route key="indexhome" exact path="/">
+            <Route key="indexhome" exact path="">
               <Home />
             </Route>
-            <Route key="home" path="/home">
+            <Route key="home" path="home">
               <Home />
             </Route>
             <Redirect key="loginredirect" path="login" to="home" />
           </>
         ) : (
           <>
-            <Route key="login" exact path="/">
+            <Route key="indexlogin" exact path="">
               <Login onLogin={[thatThis, Router.reloadRoutes]} />
             </Route>
-            <Route key="login" path="/login">
+            <Route key="login" path="login">
               <Login onLogin={[thatThis, Router.reloadRoutes]} />
             </Route>
             <Redirect key="homeredirect" path="home" to="login" />
