@@ -25,7 +25,16 @@ body {
   transform: translate(-50%, -50%);
 }
 
-a:active,
-a:focus {
-  outline: 0;
+a {
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+}
+
+li {
+  list-style-type: none;
+
+  display: inline-flex;
 }

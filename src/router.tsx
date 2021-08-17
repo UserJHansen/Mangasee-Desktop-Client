@@ -22,25 +22,25 @@ export default class Router extends React.Component<
     thatThis.setState({
       routes: [
         loggedIn ? (
-          <>
-            <Route key="indexhome" exact path="">
+          <React.Fragment key="loggedin">
+            <Route exact path="">
               <Home />
             </Route>
-            <Route key="home" path="home">
+            <Route path="home">
               <Home />
             </Route>
-            <Redirect key="loginredirect" path="login" to="home" />
-          </>
+            <Redirect path="login" to="home" />
+          </React.Fragment>
         ) : (
-          <>
-            <Route key="indexlogin" exact path="">
+          <React.Fragment key="loggedout">
+            <Route exact path="">
               <Login onLogin={[thatThis, Router.reloadRoutes]} />
             </Route>
-            <Route key="login" path="login">
+            <Route path="login">
               <Login onLogin={[thatThis, Router.reloadRoutes]} />
             </Route>
-            <Redirect key="homeredirect" path="home" to="login" />
-          </>
+            <Redirect path="home" to="login" />
+          </React.Fragment>
         ),
       ],
     });

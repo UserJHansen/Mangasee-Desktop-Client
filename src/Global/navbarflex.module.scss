@@ -4,21 +4,40 @@
   flex-wrap: wrap;
   justify-content: space-between;
 
-  background-color: #2b2b2b;
+  padding-left: 5vw;
+  padding-right: 5vw;
   width: 100%;
   color: rgba(255, 255, 255, 0.5);
 }
 
 .menubar {
-  background-color: #444 !important;
+  background-color: #444;
+  margin: 0;
 }
 
 .navitem {
-  padding: 10px 15px !important;
+  padding: 10px 15px;
+  color: rgba(255, 255, 255, 0.5);
 }
 
-.active {
+.navitem:hover,
+.dropdownitem:hover,
+.navbarbrand:hover {
   color: #fff;
+  background: #666;
+  text-decoration: none;
+}
+
+.navitem.active {
+  color: #fff;
+}
+
+.dropdown-menu-right {
+  border: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: #343a40;
 }
 
 // Modified Code taken from: https://codeconvey.com/Tutorials/expanding-search-bar-jquery/index2.html
@@ -42,6 +61,9 @@
 }
 
 @media screen and (max-width: 600px) {
+  .container {
+    padding: 0 !important;
+  }
   .expSearchFrom:focus-within {
     margin-left: calc(50vw - 145px) !important;
   }
@@ -58,7 +80,10 @@
     margin-left: 0px !important;
   }
   .logo {
-    margin-left: 5vw;
+    margin-left: 5vw !important;
+    margin: 1vw;
+    height: auto;
+    width: auto;
   }
 }
 
