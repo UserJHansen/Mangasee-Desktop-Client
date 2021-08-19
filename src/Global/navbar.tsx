@@ -13,37 +13,60 @@ import {
   faSignOutAlt,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
+import {
+  Navbar as BSNavbar,
+  Container,
+  Nav,
+  NavDropdown,
+} from 'react-bootstrap';
+
 import navbarcss from './navbarflex.module.scss';
 import logo from '../../assets/logo.png';
 
 export default function Navbar() {
   return (
     <>
-      <div
-        className={navbarcss.container}
-        style={{ backgroundColor: '#2b2b2b' }}
-      >
-        <NavLink to="home">
-          <img src={logo} alt="Mangasee Logo" className={navbarcss.logo} />
-        </NavLink>
-        <div className={navbarcss.expSearchBox}>
-          <div className={navbarcss.expSearchFrom}>
-            <input
-              id="field"
-              className={navbarcss.field}
-              type="text"
-              placeholder="Search here"
+      <BSNavbar style={{ backgroundColor: '#2b2b2b' }} variant="dark">
+        <Container>
+          <BSNavbar.Brand href="#/home">
+            <img
+              alt="Mangasee Logo"
+              src={logo}
+              className="d-inline-block align-top"
             />
-            <div className={navbarcss.close}>
-              <span />
-              <span className={navbarcss.back} />
+          </BSNavbar.Brand>
+
+          <BSNavbar.Text id="top-navbar" className="justify-content-end">
+            <div className={navbarcss.expSearchBox}>
+              <div className={navbarcss.expSearchFrom}>
+                <input
+                  id="field"
+                  className={navbarcss.field}
+                  type="text"
+                  placeholder="Search here"
+                />
+                <div className={navbarcss.close}>
+                  <span />
+                  <span className={navbarcss.back} />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className={navbarcss.menubar}>
-        <div className={`${navbarcss.container}`}>
-          <ul>
+          </BSNavbar.Text>
+        </Container>
+      </BSNavbar>
+      <BSNavbar
+        style={{ backgroundColor: '#444' }}
+        variant="dark"
+        collapseOnSelect
+        expand="lg"
+        sticky="top"
+      >
+        <Container>
+          <BSNavbar.Toggle
+            aria-controls="bottom-nav"
+            className="justify-content-end"
+          />
+          <BSNavbar.Collapse id="bottom-nav">
             {[
               ['Home', faHome],
               ['Directory', faFolder],
@@ -51,83 +74,83 @@ export default function Navbar() {
               ['Discussion', faComments],
             ].map((object) => {
               return (
-                <li key={object[0] as string}>
-                  <NavLink
-                    to={`/${object[0] as string}`}
-                    className={navbarcss.navitem}
-                    activeClassName={navbarcss.active}
-                  >
-                    <FontAwesomeIcon icon={object[1] as IconDefinition} />
-                    <span className="d-none d-md-inline">
-                      {` ${object[0] as string}`}
-                    </span>
-                  </NavLink>
-                </li>
+                <NavLink
+                  to={`/${object[0] as string}`}
+                  className={navbarcss.navitem}
+                  activeClassName={navbarcss.active}
+                  key={object[0] as string}
+                >
+                  <FontAwesomeIcon icon={object[1] as IconDefinition} />
+                  {` ${object[0] as string}`}
+                </NavLink>
               );
             })}
-          </ul>
-          <ul>
-            <li className={navbarcss.navitem}>
-              <div
-                className="dropdown"
-                onClick={() => {
-                  const dropdowns = document.getElementsByClassName('dropdown');
-
-                  for (let i = 0; i < dropdowns.length; i++) {
-                    dropdowns[i].classList.toggle('show');
-                  }
-                  const Menus =
-                    document.getElementsByClassName('dropdown-menu');
-
-                  for (let i = 0; i < Menus.length; i += 1) {
-                    Menus[i].classList.toggle('show');
-                  }
-                }}
-                onKeyPress={() => {
-                  const dropdowns = document.getElementsByClassName('dropdown');
-
-                  for (let i = 0; i < dropdowns.length; i += 1) {
-                    dropdowns[i].classList.toggle('show');
-                  }
-                  const Menus =
-                    document.getElementsByClassName('dropdown-menu');
-
-                  for (let i = 0; i < Menus.length; i += 1) {
-                    Menus[i].classList.toggle('show');
-                  }
-                }}
-                role="button"
-                tabIndex={0}
-              >
-                <FontAwesomeIcon icon={faUser} />
-                <span className="d-none d-md-inline"> Account</span>
-                <div className="dropdown-menu dropdown-menu-right">
-                  {[
-                    ['Subscriptions', faRss],
-                    ['Bookmarks', faThumbtack],
-                    ['Settings', faCog],
-                    ['Logout', faSignOutAlt],
-                  ].map((object) => {
-                    return (
-                      <div key={object[0] as string} className="dropdown-item">
-                        <NavLink
-                          to={`/${object[0] as string}`}
-                          activeClassName={navbarcss.active}
-                        >
-                          <FontAwesomeIcon icon={object[1] as IconDefinition} />
-                          <span className="d-none d-md-inline">
-                            {` ${object[0] as string}`}
-                          </span>
-                        </NavLink>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+          </BSNavbar.Collapse>
+          <Nav className="justify-content-end">
+            <NavDropdown
+              title="Account"
+              id="account-dropdown"
+              menuVariant="dark"
+            >
+              {[
+                ['Subscriptions', faRss],
+                ['Bookmarks', faThumbtack],
+                ['Settings', faCog],
+                ['Logout', faSignOutAlt],
+              ].map((object) => {
+                return (
+                  <NavDropdown.Item
+                    key={object[0] as string}
+                    href={`#/${object[0] as string}`}
+                  >
+                    <FontAwesomeIcon icon={object[1] as IconDefinition} />
+                    {` ${object[0] as string}`}
+                  </NavDropdown.Item>
+                );
+              })}
+            </NavDropdown>
+          </Nav>
+        </Container>
+      </BSNavbar>
     </>
   );
 }
+
+// [
+//   ['Home', faHome],
+//   ['Directory', faFolder],
+//   ['Search', faSearch],
+//   ['Discussion', faComments],
+// ].map((object) => {
+//   return (
+//     <li key={object[0] as string}>
+//       <NavLink
+//         to={`/${object[0] as string}`}
+//         className={navbarcss.navitem}
+//         activeClassName={navbarcss.active}
+//       >
+//         <FontAwesomeIcon icon={object[1] as IconDefinition} />
+//         <span className="d-none d-md-inline">{` ${object[0] as string}`}</span>
+//       </NavLink>
+//     </li>
+//   );
+// });
+
+// [
+//   ['Subscriptions', faRss],
+//   ['Bookmarks', faThumbtack],
+//   ['Settings', faCog],
+//   ['Logout', faSignOutAlt],
+// ].map((object) => {
+//   return (
+//     <div key={object[0] as string} className="dropdown-item">
+//       <NavLink
+//         to={`/${object[0] as string}`}
+//         activeClassName={navbarcss.active}
+//       >
+//         <FontAwesomeIcon icon={object[1] as IconDefinition} />
+//         <span className="d-none d-md-inline">{` ${object[0] as string}`}</span>
+//       </NavLink>
+//     </div>
+//   );
+// });

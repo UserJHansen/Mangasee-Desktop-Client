@@ -6,6 +6,7 @@ import Authentication from './Login/Authentication';
 
 import Home from './Home/home';
 import Login from './Login/login';
+import Directory from './Directory/Directory';
 
 const authentication = new Authentication();
 
@@ -23,23 +24,22 @@ export default class Router extends React.Component<
       routes: [
         loggedIn ? (
           <React.Fragment key="loggedin">
-            <Route exact path="">
+            <Route exact path="/">
               <Home />
             </Route>
-            <Route path="home">
+            <Route path="/home">
               <Home />
             </Route>
-            <Redirect path="login" to="home" />
+            <Route path="/directory">
+              <Directory />
+            </Route>
+            <Redirect path="/login" to="/home" />
           </React.Fragment>
         ) : (
           <React.Fragment key="loggedout">
-            <Route exact path="">
+            <Route path="">
               <Login onLogin={[thatThis, Router.reloadRoutes]} />
             </Route>
-            <Route path="login">
-              <Login onLogin={[thatThis, Router.reloadRoutes]} />
-            </Route>
-            <Redirect path="home" to="login" />
           </React.Fragment>
         ),
       ],
