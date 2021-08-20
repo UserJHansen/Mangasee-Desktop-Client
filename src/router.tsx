@@ -4,9 +4,13 @@ import React from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Authentication from './Login/Authentication';
 
+import Navbar from './Global/navbar';
+
 import Home from './Home/home';
 import Login from './Login/login';
 import Directory from './Directory/Directory';
+import Search from './Search/Search';
+import Discussion from './Discussion/Discussion';
 
 const authentication = new Authentication();
 
@@ -25,13 +29,24 @@ export default class Router extends React.Component<
         loggedIn ? (
           <React.Fragment key="loggedin">
             <Route exact path="/">
+              <Navbar />
               <Home />
             </Route>
             <Route path="/home">
+              <Navbar />
               <Home />
             </Route>
             <Route path="/directory">
+              <Navbar />
               <Directory />
+            </Route>
+            <Route path="/Search">
+              <Navbar />
+              <Search />
+            </Route>
+            <Route path="/Discussion">
+              <Navbar />
+              <Discussion />
             </Route>
             <Redirect path="/login" to="/home" />
           </React.Fragment>

@@ -6,7 +6,6 @@ import {
   faFolder,
   faSearch,
   faComments,
-  faUser,
   faRss,
   faThumbtack,
   faCog,
@@ -93,19 +92,19 @@ export default function Navbar() {
               menuVariant="dark"
             >
               {[
-                ['Subscriptions', faRss],
-                ['Bookmarks', faThumbtack],
-                ['Settings', faCog],
-                ['Logout', faSignOutAlt],
+                ['Subscriptions', faRss, () => {}],
+                ['Bookmarks', faThumbtack, () => {}],
+                ['Settings', faCog, () => {}],
+                ['Logout', faSignOutAlt, () => {}],
               ].map((object) => {
                 return (
-                  <NavDropdown.Item
+                  <NavDropdown.Button
                     key={object[0] as string}
-                    href={`#/${object[0] as string}`}
+                    onClick={object[1]}
                   >
                     <FontAwesomeIcon icon={object[1] as IconDefinition} />
                     {` ${object[0] as string}`}
-                  </NavDropdown.Item>
+                  </NavDropdown.Button>
                 );
               })}
             </NavDropdown>
@@ -115,42 +114,3 @@ export default function Navbar() {
     </>
   );
 }
-
-// [
-//   ['Home', faHome],
-//   ['Directory', faFolder],
-//   ['Search', faSearch],
-//   ['Discussion', faComments],
-// ].map((object) => {
-//   return (
-//     <li key={object[0] as string}>
-//       <NavLink
-//         to={`/${object[0] as string}`}
-//         className={navbarcss.navitem}
-//         activeClassName={navbarcss.active}
-//       >
-//         <FontAwesomeIcon icon={object[1] as IconDefinition} />
-//         <span className="d-none d-md-inline">{` ${object[0] as string}`}</span>
-//       </NavLink>
-//     </li>
-//   );
-// });
-
-// [
-//   ['Subscriptions', faRss],
-//   ['Bookmarks', faThumbtack],
-//   ['Settings', faCog],
-//   ['Logout', faSignOutAlt],
-// ].map((object) => {
-//   return (
-//     <div key={object[0] as string} className="dropdown-item">
-//       <NavLink
-//         to={`/${object[0] as string}`}
-//         activeClassName={navbarcss.active}
-//       >
-//         <FontAwesomeIcon icon={object[1] as IconDefinition} />
-//         <span className="d-none d-md-inline">{` ${object[0] as string}`}</span>
-//       </NavLink>
-//     </div>
-//   );
-// });
