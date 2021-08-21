@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { shell } from 'electron';
-import Authentication from './Authentication';
+import Authentication from '../APIs/Authentication';
 import Store from '../APIs/storage';
 import animations from './animations.module.scss';
 

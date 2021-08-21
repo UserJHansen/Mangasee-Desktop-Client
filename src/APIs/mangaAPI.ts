@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 export default class MangaAPI {
-  static async checkValidToken() {
+  static async checkValidToken(): Promise<boolean> {
     const { data } = await axios.get(
       'https://mangasee123.com/user/subscription.get.php'
     );
-    return data.success;
+    return data.success as boolean;
   }
 
   static async login(email: string, password: string) {

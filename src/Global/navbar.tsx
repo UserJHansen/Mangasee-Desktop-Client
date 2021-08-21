@@ -20,7 +20,6 @@ import {
 } from 'react-bootstrap';
 
 import navbarcss from './navbarflex.module.scss';
-import logo from '../../assets/logo.png';
 
 export default function Navbar() {
   return (
@@ -30,7 +29,7 @@ export default function Navbar() {
           <BSNavbar.Brand href="#/home">
             <img
               alt="Mangasee Logo"
-              src={logo}
+              src="https://mangasee123.com/media/navbar.brand.png"
               className="d-inline-block align-top"
             />
           </BSNavbar.Brand>
@@ -92,21 +91,30 @@ export default function Navbar() {
               menuVariant="dark"
             >
               {[
-                ['Subscriptions', faRss, () => {}],
-                ['Bookmarks', faThumbtack, () => {}],
-                ['Settings', faCog, () => {}],
-                ['Logout', faSignOutAlt, () => {}],
+                ['Subscriptions', faRss],
+                ['Bookmarks', faThumbtack],
+                ['Settings', faCog],
               ].map((object) => {
                 return (
-                  <NavDropdown.Button
+                  <NavLink
+                    to={`/${object[0] as string}`}
+                    activeClassName={navbarcss.active}
                     key={object[0] as string}
-                    onClick={object[1]}
+                    className="dropdown-item"
                   >
                     <FontAwesomeIcon icon={object[1] as IconDefinition} />
                     {` ${object[0] as string}`}
-                  </NavDropdown.Button>
+                  </NavLink>
                 );
               })}
+              <NavDropdown.Item
+                onClick={() => {
+                  console.log('Logout');
+                }}
+              >
+                <FontAwesomeIcon icon={faSignOutAlt} />
+                {' Logout'}
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Container>
