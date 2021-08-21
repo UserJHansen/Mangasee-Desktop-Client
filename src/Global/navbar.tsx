@@ -24,7 +24,11 @@ import navbarcss from './navbarflex.module.scss';
 export default function Navbar() {
   return (
     <>
-      <BSNavbar style={{ backgroundColor: '#2b2b2b' }} variant="dark">
+      <BSNavbar
+        style={{ backgroundColor: '#2b2b2b' }}
+        expand="lg"
+        variant="dark"
+      >
         <Container>
           <BSNavbar.Brand href="#/home">
             <img
