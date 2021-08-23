@@ -1,15 +1,15 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { shell } from 'electron';
+import { mutate } from 'swr';
+
 import Authentication from '../APIs/Authentication';
 import Store from '../APIs/storage';
 import animations from './animations.module.scss';
 
 import icon from '../../assets/icon.svg';
 
-export default function Home(props: {
-  onLogin: (unknown | (() => Promise<void>))[];
-}) {
+export default function Home() {
   const authentication = new Authentication();
   const store = new Store();
 
@@ -70,12 +70,7 @@ export default function Home(props: {
               document
                 .getElementsByTagName('body')[0]
                 .classList.remove(animations.spinReverse);
-              if (
-                props.onLogin[0] &&
-                props.onLogin[1] &&
-                typeof props.onLogin[1] === 'function'
-              )
-                props.onLogin[1](props.onLogin[0]);
+              mutate('/api/loggedIn');
             }
           }}
         >

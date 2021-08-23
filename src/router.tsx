@@ -2,7 +2,7 @@ import './Global/App.global.css';
 
 import React from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
-import Authentication from './APIs/Authentication';
+import useSWR from 'swr';
 
 import Navbar from './Global/navbar';
 
@@ -15,21 +15,13 @@ import Bookmarks from './Bookmarks/Bookmarks';
 import Settings from './Settings/Settings';
 import Subscriptions from './Subscriptions/Subscriptions';
 
-const authentication = new Authentication();
+export default function Router() {
+  const { data } = useSWR('/api/loggedIn', { suspense: true });
 
-interface States {
-  routes: JSX.Element[];
-}
-
-export default class Router extends React.Component<
-  Record<string, unknown>,
-  States
-> {
-  static async reloadRoutes(thatThis: Router) {
-    const loggedIn = await authentication.isLoggedIn();
-    thatThis.setState({
-      routes: [
-        loggedIn ? (
+  return (
+    <HashRouter>
+      <Switch>
+        {data ? (
           <React.Fragment key="loggedin">
             <Navbar />
             {[
@@ -51,30 +43,11 @@ export default class Router extends React.Component<
         ) : (
           <React.Fragment key="loggedout">
             <Route path="">
-              <Login onLogin={[thatThis, Router.reloadRoutes]} />
+              <Login />
             </Route>
           </React.Fragment>
-        ),
-      ],
-    });
-  }
-
-  constructor(props: Record<string, unknown>, states: States) {
-    super(props, states);
-    this.state = { routes: [] };
-  }
-
-  async componentDidMount() {
-    Router.reloadRoutes(this);
-  }
-
-  render() {
-    const { routes } = this.state;
-
-    return (
-      <HashRouter>
-        <Switch>{routes}</Switch>
-      </HashRouter>
-    );
-  }
+        )}
+      </Switch>
+    </HashRouter>
+  );
 }

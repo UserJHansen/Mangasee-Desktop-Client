@@ -1,32 +1,27 @@
-import React from 'react';
+import axios from 'axios';
 
 import Store from './storage';
-import MangaAPI from './mangaAPI';
 
 export default class Authentication {
   private store = new Store();
 
-  private AuthContext = React.createContext(false);
-
-  async isLoggedIn(): Promise<boolean> {
-    return !!(
-      this.store.get('email') &&
-      this.store.get('email') !== '' &&
-      (await MangaAPI.checkValidToken())
-    );
-  }
-
   async attemptLogin(email: string, password: string): Promise<string | true> {
-    const result = await MangaAPI.login(email, password);
+    const { data } = await axios.post(
+      'https://mangasee123.com/auth/login.php',
+      {
+        EmailAddress: email,
+        Password: password,
+      }
+    );
 
-    if (result === true) {
+    if (data.success === true) {
       this.store.set('email', email);
       return true;
     }
-    return result;
+    return data.val;
   }
 
-  render() {
-    return this.AuthContext.Provider;
+  static logout() {
+    return axios.get('https://mangasee123.com/auth/logout.php');
   }
 }

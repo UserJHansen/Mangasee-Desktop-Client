@@ -18,6 +18,9 @@ import {
   Nav,
   NavDropdown,
 } from 'react-bootstrap';
+import { mutate } from 'swr';
+
+import Authentication from '../APIs/Authentication';
 
 import navbarcss from './navbarflex.module.scss';
 
@@ -112,8 +115,9 @@ export default function Navbar() {
                 );
               })}
               <NavDropdown.Item
-                onClick={() => {
-                  console.log('Logout');
+                onClick={async () => {
+                  await Authentication.logout();
+                  mutate('/api/loggedIn');
                 }}
               >
                 <FontAwesomeIcon icon={faSignOutAlt} />
