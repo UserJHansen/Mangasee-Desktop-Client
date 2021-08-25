@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
-  faFolder,
   faSearch,
   faComments,
   faRss,
@@ -74,7 +73,6 @@ export default function Navbar() {
           <BSNavbar.Collapse id="bottom-nav">
             {[
               ['Home', faHome],
-              ['Directory', faFolder],
               ['Search', faSearch],
               ['Discussion', faComments],
             ].map((object) => {

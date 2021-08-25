@@ -15,7 +15,6 @@ import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 
-require('electron-context-menu')();
 require('electron-unhandled')();
 
 require('electron-store').initRenderer();
@@ -42,6 +41,7 @@ if (
   process.env.DEBUG_PROD === 'true'
 ) {
   require('electron-debug')();
+  require('electron-context-menu')();
 }
 
 const installExtensions = async () => {
