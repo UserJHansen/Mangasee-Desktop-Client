@@ -3,24 +3,10 @@ module.exports = {
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
     'import/no-extraneous-dependencies': 'off',
+    'jsx-a11y/anchor-is-valid': 'off',
     '@typescript-eslint/indent': 'off',
     '@typescript-eslint/comma-dangle': 'off',
-    'jsx-a11y/label-has-associated-control': [
-      'error',
-      {
-        required: {
-          some: ['nesting', 'id'],
-        },
-      },
-    ],
-    'jsx-a11y/label-has-for': [
-      'error',
-      {
-        required: {
-          some: ['nesting', 'id'],
-        },
-      },
-    ],
+    "react/jsx-one-expression-per-line": 'off'
   },
   parserOptions: {
     ecmaVersion: 2020,

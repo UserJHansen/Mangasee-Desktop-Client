@@ -9,6 +9,8 @@ render(
     <SWRConfig
       value={{
         fetcher: mangaAPIFetcher,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
       }}
     >
       <Router />

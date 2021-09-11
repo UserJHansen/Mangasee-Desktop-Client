@@ -11,13 +11,12 @@ export function FindVariable(
   const ScriptArray = SeparateLines(script, split, trim);
   const variableRegex = new RegExp(`${target}(?: *= *)(.+)(?=;?)`);
 
-  let result = '';
   for (let lineNo = 0; lineNo < ScriptArray.length; lineNo += 1) {
-    result =
-      variableRegex.exec(ScriptArray[lineNo])?.[1].replace(/;$/, '') || result;
+    if (variableRegex.test(ScriptArray[lineNo])) {
+      return variableRegex.exec(ScriptArray[lineNo])?.[1].replace(/;$/, '');
+    }
   }
-
-  return result;
+  return '';
 }
 
 export function FindVariableArray(

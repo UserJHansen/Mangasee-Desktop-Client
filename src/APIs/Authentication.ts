@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { mutate } from 'swr';
 
 import Store from './storage';
 
@@ -16,12 +17,16 @@ export default class Authentication {
 
     if (data.success === true) {
       this.store.set('email', email);
+      this.store.set('wasLoggedIn', true);
       return true;
     }
     return data.val;
   }
 
   static logout() {
-    return axios.get('https://mangasee123.com/auth/logout.php');
+    new Store().set('wasLoggedIn', false);
+    return axios
+      .get('https://mangasee123.com/auth/logout.php')
+      .then(() => mutate('/api/loggedIn'));
   }
 }

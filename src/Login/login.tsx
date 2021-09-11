@@ -88,31 +88,31 @@ export default function Home() {
           <div className="mb-3">
             <label htmlFor="EmailInput" className="form-label">
               Email address:
+              <input
+                type="email"
+                className="form-control"
+                id="EmailInput"
+                placeholder="name@example.com"
+                onChange={handleEmailChange}
+                value={email}
+                required
+              />
             </label>
-            <input
-              type="email"
-              className="form-control"
-              id="EmailInput"
-              placeholder="name@example.com"
-              onChange={handleEmailChange}
-              value={email}
-              required
-            />
           </div>
           <div className="mb-3">
             <label htmlFor="PasswordInput" className="form-label">
               Password:
+              <input
+                type="password"
+                className="form-control"
+                id="PasswordInput"
+                placeholder="********"
+                minLength={5}
+                onChange={handlePasswordChange}
+                value={password}
+                required
+              />
             </label>
-            <input
-              type="password"
-              className="form-control"
-              id="PasswordInput"
-              placeholder="********"
-              minLength={5}
-              onChange={handlePasswordChange}
-              value={password}
-              required
-            />
           </div>
           <button
             id="signupButton"
