@@ -27,6 +27,14 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.no-scroll {
+  overflow: scroll;
+}
+
+.no-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 a {
   text-decoration: none;
 }

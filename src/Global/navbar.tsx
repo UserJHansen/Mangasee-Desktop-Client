@@ -17,7 +17,6 @@ import {
   Nav,
   NavDropdown,
 } from 'react-bootstrap';
-import { mutate } from 'swr';
 
 import Authentication from '../APIs/Authentication';
 
@@ -64,6 +63,7 @@ export default function Navbar() {
         collapseOnSelect
         expand="lg"
         sticky="top"
+        id="SmallerNav"
       >
         <Container>
           <BSNavbar.Toggle
@@ -112,12 +112,7 @@ export default function Navbar() {
                   </NavLink>
                 );
               })}
-              <NavDropdown.Item
-                onClick={async () => {
-                  await Authentication.logout();
-                  mutate('/api/loggedIn');
-                }}
-              >
+              <NavDropdown.Item onClick={Authentication.logout}>
                 <FontAwesomeIcon icon={faSignOutAlt} />
                 {' Logout'}
               </NavDropdown.Item>

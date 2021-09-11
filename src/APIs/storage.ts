@@ -8,8 +8,13 @@ export default class StorageHandler extends ElectronStore {
           type: 'string',
           format: 'email',
         },
-        sessionID: {
-          type: 'string',
+        wasLoggedIn: {
+          type: 'boolean',
+          default: false,
+        },
+        FullPage: {
+          type: 'boolean',
+          default: false,
         },
       },
     });
