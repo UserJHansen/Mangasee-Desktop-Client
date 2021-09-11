@@ -179,10 +179,9 @@ export default function Home() {
             Hot This Month
           </Link>
           {Hot.slice(0, 6).map((Manga: MangaResult) => (
-            <>
+            <React.Fragment key={Manga.IndexName}>
               {' / '}
               <Link
-                key={Manga.IndexName}
                 to={`/manga/${Manga.IndexName}`}
                 title={`Read ${Manga.IndexName}`}
                 style={{
@@ -192,7 +191,7 @@ export default function Home() {
               >
                 {Manga.SeriesName}
               </Link>
-            </>
+            </React.Fragment>
           ))}
         </div>
       </Col>

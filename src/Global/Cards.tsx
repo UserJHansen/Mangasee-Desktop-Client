@@ -1,6 +1,14 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import {
+  faCheckCircle,
+  faFireAlt,
+  faRss,
+} from '@fortawesome/free-solid-svg-icons';
+import { faClock, faFile } from '@fortawesome/free-regular-svg-icons';
 
 import { chapterURLEncode, ChapterDisplay } from './DisplayTools';
 import MangaResult from '../Interfaces/MangaResult';
@@ -14,6 +22,8 @@ interface ThinCardProps {
 
 interface WideCardProps {
   manga: MangaResult;
+  subArr: string[];
+  hotArr: string[];
 }
 
 export function ThinCard({ children, link, title, src }: ThinCardProps) {
@@ -92,7 +102,7 @@ export function ThinCard({ children, link, title, src }: ThinCardProps) {
   );
 }
 
-export function WideCard({ manga }: WideCardProps) {
+export function WideCard({ manga, subArr, hotArr }: WideCardProps) {
   return (
     <Col md={12} xl={6}>
       <Row
@@ -130,7 +140,43 @@ export function WideCard({ manga }: WideCardProps) {
               manga.Chapter
             )}`}
           >
-            Info
+            <div
+              style={{
+                fontWeight: 600,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {manga.ScanStatus === 'Complete' && (
+                <FontAwesomeIcon icon={faCheckCircle} title="Complete" />
+              )}
+              {subArr.includes(manga.SeriesID) && (
+                <FontAwesomeIcon icon={faRss} />
+              )}
+              {hotArr.includes(manga.SeriesID) && (
+                <FontAwesomeIcon icon={faFireAlt} />
+              )}
+              {manga.SeriesName}
+            </div>
+            <div
+              style={{
+                color: 'gray',
+                fontSize: 14,
+              }}
+            >
+              <FontAwesomeIcon icon={faFile} />
+              Chapter {ChapterDisplay(manga.Chapter)}
+            </div>
+            <div
+              style={{
+                color: 'gray',
+                fontSize: 14,
+              }}
+            >
+              <FontAwesomeIcon icon={faClock} />
+              <ReactTimeAgo date={manga.Date} />
+            </div>
           </Link>
         </Col>
       </Row>

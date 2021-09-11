@@ -5,4 +5,5 @@ export default interface MangaResult {
   IsEdd: boolean;
   SeriesID: string;
   SeriesName: string;
+  ScanStatus?: string;
 }

@@ -81,6 +81,7 @@ const createWindow = async () => {
     webPreferences: {
       nodeIntegration: true,
       spellcheck: true,
+      contextIsolation: false,
     },
   });
 

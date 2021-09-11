@@ -60,9 +60,6 @@ export default merge(baseConfig, {
         use: [
           {
             loader: require.resolve('babel-loader'),
-            options: {
-              plugins: [require.resolve('react-refresh/babel')].filter(Boolean),
-            },
           },
         ],
       },
@@ -238,8 +235,6 @@ export default merge(baseConfig, {
     new webpack.LoaderOptionsPlugin({
       debug: true,
     }),
-
-    new ReactRefreshWebpackPlugin(),
   ],
 
   node: {
@@ -249,25 +244,22 @@ export default merge(baseConfig, {
 
   devServer: {
     port,
-    publicPath,
-    compress: true,
-    noInfo: false,
-    stats: 'errors-only',
-    inline: true,
-    lazy: false,
-    hot: true,
+    devMiddleware: {
+      publicPath,
+      stats: 'errors-only',
+    },
     headers: { 'Access-Control-Allow-Origin': '*' },
-    contentBase: path.join(__dirname, 'dist'),
-    watchOptions: {
-      aggregateTimeout: 300,
-      ignored: /node_modules/,
-      poll: 100,
+    static: {
+      directory: path.resolve(__dirname, 'dist'),
+      watch: {
+        ignored: /node_modules/
+      }
     },
     historyApiFallback: {
       verbose: true,
       disableDotRule: false,
     },
-    before() {
+    onBeforeSetupMiddleware() {
       console.log('Starting Main Process...');
       spawn('npm', ['run', 'start:main'], {
         shell: true,

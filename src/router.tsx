@@ -4,6 +4,9 @@ import React from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import useSWR from 'swr';
 
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
 import { Container } from 'react-bootstrap';
 import Navbar from './Global/navbar';
 
@@ -16,6 +19,8 @@ import Discussion from './Discussion/Discussion';
 import Bookmarks from './Bookmarks/Bookmarks';
 import Settings from './Settings/Settings';
 import Subscriptions from './Subscriptions/Subscriptions';
+
+TimeAgo.addDefaultLocale(en);
 
 export default function Router() {
   const { data: isLoggedIn } = useSWR('/api/loggedIn', {
