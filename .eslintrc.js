@@ -6,7 +6,7 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': 'off',
     '@typescript-eslint/indent': 'off',
     '@typescript-eslint/comma-dangle': 'off',
-    "react/jsx-one-expression-per-line": 'off'
+    'react/jsx-one-expression-per-line': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,
