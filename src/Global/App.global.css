@@ -48,3 +48,35 @@ li {
 
   display: inline-flex;
 }
+
+.top-20 {
+  margin-top: 20px;
+}
+
+.top-15 {
+  margin-top: 15px;
+}
+
+.top-10 {
+  margin-top: 10px;
+}
+
+.top-5 {
+  margin-top: 5px;
+}
+
+.bottom-20 {
+  margin-bottom: 20px;
+}
+
+.bottom-15 {
+  margin-bottom: 15px;
+}
+
+.bottom-10 {
+  margin-bottom: 10px;
+}
+
+.bottom-5 {
+  margin-bottom: 5px;
+}

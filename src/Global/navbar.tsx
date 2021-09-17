@@ -5,6 +5,7 @@ import {
   faHome,
   faSearch,
   faComments,
+  faFolder,
   faRss,
   faThumbtack,
   faCog,
@@ -73,6 +74,7 @@ export default function Navbar() {
           <BSNavbar.Collapse id="bottom-nav">
             {[
               ['Home', faHome],
+              ['Directory', faFolder],
               ['Search', faSearch],
               ['Discussion', faComments],
             ].map((object) => {

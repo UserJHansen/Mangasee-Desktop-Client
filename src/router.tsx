@@ -4,9 +4,6 @@ import React from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import useSWR from 'swr';
 
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en';
-
 import { Container } from 'react-bootstrap';
 import Navbar from './Global/navbar';
 
@@ -15,12 +12,11 @@ import Store from './APIs/storage';
 import Home from './Home/home';
 import Login from './Login/login';
 import Search from './Search/Search';
+import Directory from './Directory/Directory';
 import Discussion from './Discussion/Discussion';
 import Bookmarks from './Bookmarks/Bookmarks';
 import Settings from './Settings/Settings';
 import Subscriptions from './Subscriptions/Subscriptions';
-
-TimeAgo.addDefaultLocale(en);
 
 export default function Router() {
   const { data: isLoggedIn } = useSWR('/api/loggedIn', {
@@ -41,6 +37,7 @@ export default function Router() {
                 ['/', Home],
                 ['/home', Home],
                 ['/Search', Search],
+                ['/Directory', Directory],
                 ['/Discussion', Discussion],
                 ['/Bookmarks', Bookmarks],
                 ['/Settings', Settings],

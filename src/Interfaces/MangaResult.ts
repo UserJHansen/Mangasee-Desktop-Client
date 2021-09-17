@@ -6,4 +6,5 @@ export default interface MangaResult {
   SeriesID: string;
   SeriesName: string;
   ScanStatus?: string;
+  LatestChapter: { Chapter: string; Date: string };
 }

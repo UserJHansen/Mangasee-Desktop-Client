@@ -244,6 +244,7 @@ export default merge(baseConfig, {
 
   devServer: {
     port,
+    host: 'localhost',
     devMiddleware: {
       publicPath,
       stats: 'errors-only',

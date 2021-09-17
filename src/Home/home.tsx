@@ -1,52 +1,75 @@
+import React from 'react';
+import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import useSWR, { mutate } from 'swr';
+
 import {
   faAngleDoubleRight,
   faBook,
+  faEraser,
   faFireAlt,
+  faHistory,
+  faPlus,
+  faRss,
   faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
-import { Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import useSWR from 'swr';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Box from '../Global/Box';
 import { ThinCard, WideCard } from '../Global/Cards';
+import CSS from './home.module.scss';
 
 import { chapterURLEncode, ChapterDisplay } from '../Global/DisplayTools';
 import MangaResult from '../Interfaces/MangaResult';
+
+import Store from '../APIs/storage';
 
 export default function Home() {
   const { data: Recommendations } = useSWR('/api/Recommendations');
   const { data: Hot } = useSWR('/api/Hot');
   const { data: TopTen } = useSWR('/api/TopTen');
+  const { data: Latest } = useSWR('/api/Latest');
+  const { data: Subbed } = useSWR('/api/Subbed');
+  const { data: SubFeed } = useSWR('/api/SubFeed');
+  const { data: History } = useSWR('/api/History');
+  const { data: NewSeries } = useSWR('/api/NewSeries');
 
-  if (!(Recommendations && Hot && TopTen)) return <></>;
+  if (
+    !(
+      Recommendations &&
+      Hot &&
+      TopTen &&
+      Latest &&
+      Subbed &&
+      SubFeed &&
+      History &&
+      NewSeries
+    )
+  )
+    return <>Loading...</>;
 
+  const store = new Store();
+  if (navigator.onLine) {
+    store.set('lastRecommendations', Recommendations);
+    store.set('lastHot', Hot);
+    store.set('lastTopTen', TopTen);
+    store.set('lastLatest', Latest);
+    store.set('lastSubbed', Subbed);
+    store.set('lastSubFeed', SubFeed);
+    store.set('lastNewSeries', NewSeries);
+  }
   const Recommendation =
     Recommendations[Math.floor(Math.random() * Recommendations.length)];
 
   return (
     <Row>
-      <Box
-        width={8}
-        icon={faThumbsUp}
-        title="Admin Recommendation"
-        style={{
-          padding: '10px 15px',
-        }}
-      >
+      <Box width={8} icon={faThumbsUp} title="Admin Recommendation">
         <table>
           <tbody>
             <tr>
               <td>
                 <Link to={`/manga/${Recommendation.IndexName}`}>
-                  <div
-                    style={{
-                      maxHeight: 145,
-                      overflow: 'hidden',
-                      background: 'gray',
-                    }}
-                  >
+                  <div className={CSS.image}>
                     <img
                       src={`https://cover.nep.li/cover/${Recommendation.IndexName}.jpg`}
                       alt="Cover"
@@ -55,28 +78,21 @@ export default function Home() {
                   </div>
                 </Link>
               </td>
-              <td valign="top" style={{ padding: '5px 15px' }}>
+              <td valign="top" className={CSS.admininfo}>
                 <Link
                   to={`/manga/${Recommendation.IndexName}`}
                   title={`Read ${Recommendation.SeriesName}`}
+                  className={CSS.adminname}
                 >
                   {Recommendation.SeriesName}
                 </Link>
-                <div
-                  style={{
-                    marginTop: 5,
-                  }}
-                >
+                <div className="top-5">
                   Year:{' '}
                   <Link to={`/search/?year=${Recommendation.Year}`}>
                     {Recommendation.Year}
                   </Link>
                 </div>
-                <div
-                  style={{
-                    marginTop: 5,
-                  }}
-                >
+                <div className="top-5">
                   Status:{' '}
                   <Link to={`/search/?status=${Recommendation.ScanStatus}`}>
                     {Recommendation.ScanStatus} (Scan)
@@ -86,11 +102,7 @@ export default function Home() {
                     {Recommendation.ScanStatus} (Publish)
                   </Link>
                 </div>
-                <div
-                  style={{
-                    marginTop: 5,
-                  }}
-                >
+                <div className="top-5">
                   Genres:{' '}
                   {Recommendation.Genres.map((Genre: string) => {
                     return (
@@ -109,13 +121,7 @@ export default function Home() {
           </tbody>
         </table>
       </Box>
-      <Col
-        lg={4}
-        style={{
-          marginTop: '15px',
-          marginBottom: '15px',
-        }}
-      >
+      <Col lg={4} className={CSS.berserkimage}>
         <Link to="/manga/Berserk">
           <img
             className="img-fluid"
@@ -132,14 +138,9 @@ export default function Home() {
         rightText="More"
         LinkElement={Link}
         linkProps={{ to: '/hot' }}
-        style={{ padding: 0 }}
+        className={CSS.hot}
       >
-        <Row
-          style={{
-            margin: 0,
-            padding: '0 0 10px 0',
-          }}
-        >
+        <Row className={CSS.hotcontent}>
           {Hot.slice(0, 12).map((Manga: MangaResult) => (
             <ThinCard
               link={`/read/${Manga.IndexName}${chapterURLEncode(
@@ -157,25 +158,8 @@ export default function Home() {
         </Row>
       </Box>
       <Col lg={12}>
-        <div
-          style={{
-            whiteSpace: 'nowrap',
-            textAlign: 'center',
-            color: 'gray',
-            background: '#fff',
-            padding: '10px 15px',
-            margin: 0,
-          }}
-          className="no-scroll"
-        >
-          <Link
-            to="/search/?sort=vm&desc=true"
-            style={{
-              fontWeight: 600,
-              display: 'inline-block',
-              margin: '0 5px',
-            }}
-          >
+        <div className={`no-scroll ${CSS.hotlist}`}>
+          <Link to="/search/?sort=vm&desc=true" className={CSS.hottext}>
             Hot This Month
           </Link>
           {Hot.slice(0, 6).map((Manga: MangaResult) => (
@@ -184,10 +168,7 @@ export default function Home() {
               <Link
                 to={`/manga/${Manga.IndexName}`}
                 title={`Read ${Manga.IndexName}`}
-                style={{
-                  display: 'inline-block',
-                  margin: '0 5px',
-                }}
+                className={CSS.hotcontent}
               >
                 {Manga.SeriesName}
               </Link>
@@ -195,14 +176,106 @@ export default function Home() {
           ))}
         </div>
       </Col>
-      <Box
-        width={8}
-        title="Latest Chapters"
-        icon={faBook}
-        style={{ padding: '5px 15px' }}
-      >
-        <Row>Latest Chapters</Row>
+      <Box width={8} title="Latest Chapters" icon={faBook}>
+        <Row>
+          {Latest.slice(0, 40).map((Manga: MangaResult) => (
+            <WideCard
+              key={Manga.IndexName}
+              subArr={Subbed.map((sub: MangaResult) => sub.SeriesID)}
+              hotArr={Hot.map((hot: MangaResult) => hot.SeriesID)}
+              manga={Manga}
+            />
+          ))}
+        </Row>
+        <Link className={`${CSS.viewmore}`} to="/search/?sort=lt&desc=true">
+          View More
+        </Link>
       </Box>
+      <Col lg={4}>
+        <Box
+          width={0}
+          icon={faRss}
+          title="Subscription Feed"
+          className="bottom-10"
+          style={{ padding: 0 }}
+        >
+          <ListGroup variant="flush">
+            {Subbed.length === 0 ? (
+              <ListGroupItem as={Link} className="bottom-10" to="/search">
+                You don&apos;t have any subscriptions yet.
+              </ListGroupItem>
+            ) : (
+              <>
+                {SubFeed.map((manga: MangaResult) => (
+                  <ListGroupItem
+                    key={manga.IndexName + manga.Chapter}
+                    as={Link}
+                    to={`/read/${manga.IndexName}${chapterURLEncode(
+                      manga.Chapter
+                    )}`}
+                  >
+                    <span className={CSS.subfeedtitle}>{manga.SeriesName}</span>{' '}
+                    Chapter {ChapterDisplay(manga.Chapter)}
+                  </ListGroupItem>
+                ))}
+                <ListGroupItem as={Link} to="/feed">
+                  {' '}
+                  View More...{' '}
+                </ListGroupItem>
+              </>
+            )}
+          </ListGroup>
+        </Box>
+        <Box width={0} title="History" icon={faHistory} style={{ padding: 0 }}>
+          <ListGroup variant="flush">
+            {History.length === 0 ? (
+              <ListGroupItem className="bottom-10">
+                No history entries found.
+              </ListGroupItem>
+            ) : (
+              <>
+                {History.slice(0, 10).map((manga: MangaResult) => (
+                  <ListGroupItem
+                    key={manga.IndexName + manga.Chapter}
+                    as={Link}
+                    to={`/read/${manga.IndexName}${chapterURLEncode(
+                      manga.Chapter
+                    )}`}
+                  >
+                    <span className={CSS.subfeedtitle}>{manga.SeriesName}</span>{' '}
+                    Chapter {ChapterDisplay(manga.Chapter)}
+                  </ListGroupItem>
+                ))}
+                <ListGroupItem action onClick={() => mutate('/history/Clear')}>
+                  <FontAwesomeIcon icon={faEraser} /> Clear History
+                </ListGroupItem>
+              </>
+            )}
+          </ListGroup>
+        </Box>
+        <Box
+          width={0}
+          title="Recently Added"
+          icon={faPlus}
+          style={{ padding: 0 }}
+        >
+          <ListGroup variant="flush">
+            {NewSeries.slice(0, 10).map((manga: MangaResult) => (
+              <ListGroupItem
+                key={manga.IndexName + manga.Chapter}
+                as={Link}
+                to={`/manga/${manga.IndexName}`}
+              >
+                {manga.SeriesName}
+              </ListGroupItem>
+            ))}
+            <ListGroupItem as={Link} to="/feed">
+              {' '}
+              View More...{' '}
+            </ListGroupItem>
+          </ListGroup>
+        </Box>
+      </Col>
     </Row>
   );
 }

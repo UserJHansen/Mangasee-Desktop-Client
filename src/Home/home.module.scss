@@ -1,0 +1,67 @@
+.viewmore {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  text-align: center;
+  background: #f2f2f2;
+  padding: 5px;
+  color: gray !important;
+  display: block;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+}
+
+.viewmore::hover {
+  cursor: pointer;
+  background: #ddd;
+}
+
+.admininfo {
+  padding: 5px 15px;
+}
+
+.adminname {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.image {
+  max-height: 145px;
+  overflow: hidden;
+  background: gray;
+}
+
+.berserkimage {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.hot {
+  margin-top: 0 !important;
+}
+
+.hotcontent {
+  margin: 0;
+  padding: 0 0 10px 0;
+}
+
+.hotlist {
+  white-space: nowrap;
+  text-align: center;
+  color: gray;
+  background: #fff;
+  padding: 10px 15px;
+  margin: 0;
+}
+
+.hottext {
+  font-weight: 600;
+  display: inline-block;
+}
+
+.hotseries {
+  display: inline-block;
+  margin: 0 5px;
+}
+.subfeedtitle {
+  font-weight: 600;
+}

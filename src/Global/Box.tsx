@@ -4,11 +4,14 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import CSS from './box.module.scss';
+
 interface BoxProps {
-  children: string | React.ElementType | JSX.Element;
+  children: React.ReactNode;
   width: number;
   icon: IconDefinition;
   title: string;
+  className?: string;
   style?: Record<string, unknown>;
   rightIcon?: IconDefinition;
   rightText?: string;
@@ -18,6 +21,7 @@ interface BoxProps {
 
 export default function Box({
   children,
+  className,
   width,
   icon,
   title,
@@ -27,46 +31,33 @@ export default function Box({
   LinkElement = undefined,
   linkProps = {},
 }: BoxProps) {
-  return (
-    <Col lg={width}>
-      <div style={{ marginTop: '15px', marginBottom: '15px' }}>
-        <div
-          style={{
-            background: '#247D8F',
-            padding: '10px 15px',
-            color: '#fff',
-            fontSize: '18px',
-          }}
-        >
-          <FontAwesomeIcon icon={icon} />
-          {` ${title}`}
-          {rightIcon && LinkElement ? (
-            <LinkElement
-              style={{ color: '#fff', textDecoration: 'none', float: 'right' }}
-              {...{ to: linkProps.to, onClick: linkProps.onClick }}
-            >
-              {`${rightText || ''} `}
-              <FontAwesomeIcon icon={rightIcon} />
-            </LinkElement>
-          ) : (
-            <></>
-          )}
-        </div>
-        <div
-          style={{
-            ...{
-              background: '#fff',
-              color: '#000',
-              padding: '10px 15px',
-            },
-            ...style,
-          }}
-        >
-          {children}
-        </div>
+  const content = (
+    <div
+      className={className}
+      style={{ marginTop: '15px', marginBottom: '15px' }}
+    >
+      <div className={CSS.header}>
+        <FontAwesomeIcon icon={icon} />
+        {` ${title}`}
+        {rightIcon && LinkElement ? (
+          <LinkElement
+            className={CSS.link}
+            {...{ to: linkProps.to, onClick: linkProps.onClick }}
+          >
+            {`${rightText || ''} `}
+            <FontAwesomeIcon icon={rightIcon} />
+          </LinkElement>
+        ) : (
+          <></>
+        )}
       </div>
-    </Col>
+      <div style={style} className={CSS.body}>
+        {children}
+      </div>
+    </div>
   );
+
+  return width > 0 ? <Col lg={width}>{content}</Col> : content;
 }
 
 Box.defaultProps = {
@@ -75,4 +66,5 @@ Box.defaultProps = {
   style: {},
   LinkElement: undefined,
   linkProps: {},
+  className: '',
 };
