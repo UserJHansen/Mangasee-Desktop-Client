@@ -16,6 +16,7 @@ export default class StorageHandler extends ElectronStore {
           type: 'boolean',
           default: false,
         },
+        lastFullDirectory: { type: 'object' },
         mangaList: { type: 'array' },
         lastRecommendations: { type: 'array' },
         lastHot: { type: 'array' },
