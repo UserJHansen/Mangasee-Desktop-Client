@@ -1,4 +1,9 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React, { Suspense } from 'react';
+
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import { SWRConfig } from 'swr';
