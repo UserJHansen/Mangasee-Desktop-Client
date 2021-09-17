@@ -1,5 +1,5 @@
 import React from 'react';
 
-export default function Discussion() {
+export default function Directory() {
   return <>Directory</>;
 }

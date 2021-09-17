@@ -59,7 +59,7 @@ export default function Navbar() {
         </Container>
       </BSNavbar>
       <BSNavbar
-        style={{ backgroundColor: '#444' }}
+        style={{ backgroundColor: '#444', top: -1 }}
         variant="dark"
         collapseOnSelect
         expand="lg"
