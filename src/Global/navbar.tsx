@@ -92,11 +92,7 @@ export default function Navbar() {
             })}
           </BSNavbar.Collapse>
           <Nav className="justify-content-end">
-            <NavDropdown
-              title="Account"
-              id="account-dropdown"
-              menuVariant="dark"
-            >
+            <NavDropdown title="Account" id="account-dropdown">
               {[
                 ['Subscriptions', faRss],
                 ['Bookmarks', faThumbtack],
