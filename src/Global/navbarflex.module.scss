@@ -22,8 +22,8 @@
 }
 
 .expSearchFrom {
-  border: 3px solid #fff;
-  border-radius: 20px;
+  background: #fff;
+  border: 3px solid #000;
   display: inline-block;
   height: 34px;
   position: relative;
@@ -43,7 +43,7 @@
   transition: width 0.5s;
   position: relative;
   z-index: 2;
-  color: #fff;
+  color: #000;
 }
 .field:focus {
   width: 200px;
@@ -81,6 +81,7 @@
   opacity: 0;
 }
 .field:focus + .close span {
+  background: #000 none repeat scroll 0 0;
   top: 12px;
   right: 5px;
 }

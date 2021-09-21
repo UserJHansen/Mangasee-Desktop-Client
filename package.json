@@ -256,7 +256,8 @@
     "react-timeago": "^6.2.1",
     "regenerator-runtime": "^0.13.9",
     "source-map-support": "^0.5.20",
-    "swr": "^1.0.1"
+    "swr": "^1.0.1",
+    "use-state-with-callback": "^2.0.3"
   },
   "devEngines": {
     "node": ">=10.x",
