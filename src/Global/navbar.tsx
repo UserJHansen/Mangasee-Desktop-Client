@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
@@ -11,7 +11,6 @@ import {
   faCog,
   faSignOutAlt,
   IconDefinition,
-  faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   Navbar as BSNavbar,
@@ -20,11 +19,17 @@ import {
   NavDropdown,
   Row,
   Col,
+  InputGroup,
+  FormControl,
 } from 'react-bootstrap';
 
 import Authentication from '../APIs/Authentication';
 
 import CSS from './navbarflex.module.scss';
+
+function quickSearch() {}
+
+function quickSearchSubmit() {}
 
 export default function Navbar() {
   return (
@@ -37,37 +42,30 @@ export default function Navbar() {
         <Container>
           <Row className="align-items-center" style={{ width: 'inherit' }}>
             <Col lg={8} md={7} className="mx-auto">
-              <BSNavbar.Brand href="#/home">
+              <Link to="/home">
                 <img
                   alt="Mangasee Logo"
                   src="https://mangasee123.com/media/navbar.brand.png"
-                  className="d-inline-block align-top"
+                  className="d-inline-block"
                 />
-              </BSNavbar.Brand>
+              </Link>
             </Col>
-            <Col lg={4} md={5} className="mx-auto">
-              <div className={CSS.expSearchBox}>
-                <div className={CSS.expSearchFrom}>
-                  <input
-                    id="field"
-                    className={CSS.field}
-                    type="text"
-                    placeholder="Search here"
-                  />
-                  <div className={CSS.close}>
-                    <FontAwesomeIcon icon={faSearch} />
-                    <span />
-                    <span className={CSS.back} />
-                  </div>
-                </div>
-              </div>
-              <div className={CSS.SearchResult}>
-                <div className={CSS.SearchResultCover}>
-                  <div className={CSS.NoResults}>
-                    <FontAwesomeIcon icon={faSpinner} spin /> Searching...
-                  </div>
-                </div>
-              </div>
+            <Col lg={4} md={5} className={`mx-auto ${CSS.QuickSearch}`}>
+              <InputGroup className="mx-auto">
+                <FormControl
+                  type="text"
+                  placeholder="Quick Search..."
+                  onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (event.key === 'Enter') quickSearchSubmit();
+                    else quickSearch();
+
+                    event.preventDefault();
+                  }}
+                />
+                <InputGroup.Text onClick={quickSearchSubmit}>
+                  <FontAwesomeIcon icon={faSearch} />
+                </InputGroup.Text>
+              </InputGroup>
             </Col>
           </Row>
         </Container>
