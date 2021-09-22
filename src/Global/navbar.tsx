@@ -11,17 +11,20 @@ import {
   faCog,
   faSignOutAlt,
   IconDefinition,
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   Navbar as BSNavbar,
   Container,
   Nav,
   NavDropdown,
+  Row,
+  Col,
 } from 'react-bootstrap';
 
 import Authentication from '../APIs/Authentication';
 
-import navbarcss from './navbarflex.module.scss';
+import CSS from './navbarflex.module.scss';
 
 export default function Navbar() {
   return (
@@ -32,30 +35,41 @@ export default function Navbar() {
         variant="dark"
       >
         <Container>
-          <BSNavbar.Brand href="#/home">
-            <img
-              alt="Mangasee Logo"
-              src="https://mangasee123.com/media/navbar.brand.png"
-              className="d-inline-block align-top"
-            />
-          </BSNavbar.Brand>
-
-          <BSNavbar.Text id="top-navbar" className="justify-content-end">
-            <div className={navbarcss.expSearchBox}>
-              <div className={navbarcss.expSearchFrom}>
-                <input
-                  id="field"
-                  className={navbarcss.field}
-                  type="text"
-                  placeholder="Search here"
+          <Row className="align-items-center" style={{ width: 'inherit' }}>
+            <Col lg={8} md={7} className="mx-auto">
+              <BSNavbar.Brand href="#/home">
+                <img
+                  alt="Mangasee Logo"
+                  src="https://mangasee123.com/media/navbar.brand.png"
+                  className="d-inline-block align-top"
                 />
-                <div className={navbarcss.close}>
-                  <span />
-                  <span className={navbarcss.back} />
+              </BSNavbar.Brand>
+            </Col>
+            <Col lg={4} md={5} className="mx-auto">
+              <div className={CSS.expSearchBox}>
+                <div className={CSS.expSearchFrom}>
+                  <input
+                    id="field"
+                    className={CSS.field}
+                    type="text"
+                    placeholder="Search here"
+                  />
+                  <div className={CSS.close}>
+                    <FontAwesomeIcon icon={faSearch} />
+                    <span />
+                    <span className={CSS.back} />
+                  </div>
                 </div>
               </div>
-            </div>
-          </BSNavbar.Text>
+              <div className={CSS.SearchResult}>
+                <div className={CSS.SearchResultCover}>
+                  <div className={CSS.NoResults}>
+                    <FontAwesomeIcon icon={faSpinner} spin /> Searching...
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
         </Container>
       </BSNavbar>
       <BSNavbar
@@ -81,8 +95,8 @@ export default function Navbar() {
               return (
                 <NavLink
                   to={`/${object[0] as string}`}
-                  className={navbarcss.navitem}
-                  activeClassName={navbarcss.active}
+                  className={CSS.navitem}
+                  activeClassName={CSS.active}
                   key={object[0] as string}
                 >
                   <FontAwesomeIcon icon={object[1] as IconDefinition} />
@@ -101,7 +115,7 @@ export default function Navbar() {
                 return (
                   <NavLink
                     to={`/${object[0] as string}`}
-                    activeClassName={navbarcss.active}
+                    activeClassName={CSS.active}
                     key={object[0] as string}
                     className="dropdown-item"
                   >

@@ -14,6 +14,42 @@
   color: #fff;
 }
 
+.SearchResult {
+  position: absolute;
+  left: 0;
+  padding: 15px;
+  margin-top: -25px;
+  width: 100%;
+  z-index: 1000;
+}
+.SearchResultLabel {
+  display: inline-block;
+  max-width: calc(100% - 60px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.SearchResultCover {
+  background-color: #ddeaff;
+}
+.SearchLink {
+  display: block !important;
+  color: #343a40;
+}
+.SearchLink:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #247d8f;
+  text-decoration: none;
+}
+.NoResults {
+  padding: 10px;
+  color: #000;
+}
+.input-group * {
+  border-color: #bbb;
+}
+
 // Modified Code taken from: https://codeconvey.com/Tutorials/expanding-search-bar-jquery/index2.html
 
 .expSearchBox {
@@ -23,7 +59,7 @@
 
 .expSearchFrom {
   background: #fff;
-  border: 3px solid #000;
+  border: 3px solid none;
   display: inline-block;
   height: 34px;
   position: relative;
@@ -67,12 +103,17 @@
   display: block;
   height: 4px;
   position: absolute;
-  right: -7px;
-  top: 29px;
+  display: none;
   width: 14px;
 
   transition: 0.2s 0.5s ease-in-out;
   transform: rotate(45deg);
+}
+
+.close svg {
+  color: black;
+  margin-left: 8px;
+  margin-top: 8px;
 }
 
 .close span.back {
@@ -84,6 +125,11 @@
   background: #000 none repeat scroll 0 0;
   top: 12px;
   right: 5px;
+  display: block;
+}
+
+.field:focus + .close svg {
+  display: none;
 }
 
 .field:focus + .close span.back {
