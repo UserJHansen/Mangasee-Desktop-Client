@@ -18,8 +18,12 @@ import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import Store from '../APIs/storage';
+
 import Box from '../Global/Box';
+
+import MangaReturn from '../Interfaces/MangaReturn';
+import fastFilter from '../Global/fastFilter';
+import Store from '../APIs/storage';
 
 function mergeGenres(genres: number[], allGenres: string[]) {
   const genreArray = [];
@@ -27,23 +31,6 @@ function mergeGenres(genres: number[], allGenres: string[]) {
     genreArray.push(allGenres[genres[i]]);
   }
   return genreArray.join(', ');
-}
-
-const fastFilter = (fn: (e: never) => boolean, a: never[]): never[] => {
-  const f: never[] = []; // Final Array
-  for (let i = 0; i < a?.length; i += 1) {
-    if (fn(a[i])) {
-      f.push(a[i]);
-    }
-  }
-  return f;
-};
-
-interface MangaReturn {
-  i: string;
-  st: string;
-  s: string;
-  g: number[];
 }
 
 export default function Directory() {
@@ -83,9 +70,9 @@ export default function Directory() {
   };
   React.useEffect(forceReload, [FullDirectory, selected]);
 
-  const store = new Store();
   if (!FullDirectory) return <>Loading...</>;
   if (navigator.onLine) {
+    const store = new Store();
     store.set('lastFullDirectory', FullDirectory);
   }
 

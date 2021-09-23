@@ -1,5 +1,9 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useHistory } from 'react-router-dom';
+import useSWR from 'swr';
+import { decode } from 'he';
+import Fuse from 'fuse.js';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faHome,
@@ -24,14 +28,45 @@ import {
 } from 'react-bootstrap';
 
 import Authentication from '../APIs/Authentication';
+import Store from '../APIs/storage';
+import MangaReturn from '../Interfaces/MangaReturn';
 
 import CSS from './navbarflex.module.scss';
 
-function quickSearch() {}
-
-function quickSearchSubmit() {}
-
 export default function Navbar() {
+  const { data: SearchableList } = useSWR('/api/SearchableList');
+  const history = useHistory();
+  const [searchTerm, setSearchTerm] = React.useState('');
+
+  const fuse = React.useMemo(
+    () =>
+      new Fuse(SearchableList || [], {
+        keys: [
+          { name: 's', weight: 0.9 },
+          { name: 'a', weight: 0.1 },
+        ],
+        threshold: 0.3,
+      }),
+    [SearchableList]
+  );
+
+  if (!SearchableList) return <>Loading...</>;
+  if (navigator.onLine) {
+    const store = new Store();
+    store.set('lastSearchableList', SearchableList);
+  }
+
+  const results: Fuse.FuseResult<MangaReturn>[] = fuse.search(searchTerm);
+
+  function quickSearchSubmit() {
+    if (results.length === 1) {
+      history.push(`/manga/${results[0].item.i}`);
+    } else {
+      history.push(`/search/?name=${searchTerm}`);
+    }
+    setSearchTerm('');
+  }
+
   return (
     <>
       <BSNavbar
@@ -41,7 +76,7 @@ export default function Navbar() {
       >
         <Container>
           <Row className="align-items-center" style={{ width: 'inherit' }}>
-            <Col lg={8} md={7} className="mx-auto">
+            <Col lg={8} md={7}>
               <Link to="/home">
                 <img
                   alt="Mangasee Logo"
@@ -50,22 +85,56 @@ export default function Navbar() {
                 />
               </Link>
             </Col>
-            <Col lg={4} md={5} className={`mx-auto ${CSS.QuickSearch}`}>
-              <InputGroup className="mx-auto">
+            <Col
+              lg={4}
+              md={5}
+              className={CSS.QuickSearch}
+              style={{ position: 'relative' }}
+            >
+              <InputGroup>
                 <FormControl
                   type="text"
                   placeholder="Quick Search..."
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    setSearchTerm(event.target.value)
+                  }
+                  value={searchTerm}
                   onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => {
                     if (event.key === 'Enter') quickSearchSubmit();
-                    else quickSearch();
-
-                    event.preventDefault();
                   }}
                 />
-                <InputGroup.Text onClick={quickSearchSubmit}>
+                <InputGroup.Text onClick={() => quickSearchSubmit()}>
                   <FontAwesomeIcon icon={faSearch} />
                 </InputGroup.Text>
               </InputGroup>
+              {(() => {
+                if (searchTerm.length > 1)
+                  return results.length === 0 ? (
+                    <div className={CSS.SearchResult}>No Results</div>
+                  ) : (
+                    <div className={CSS.SearchResult}>
+                      {results
+                        .slice(0, 10)
+                        .map((manga: Fuse.FuseResult<MangaReturn>) => (
+                          <Link
+                            key={manga.item.i}
+                            to={`/manga/${manga.item.i}`}
+                            className={CSS.SearchLink}
+                            onClick={() => setSearchTerm('')}
+                          >
+                            <img
+                              alt="Cover"
+                              src={`https://cover.nep.li/cover/${manga.item.i}.jpg`}
+                            />
+                            <div className={CSS.SearchResultLabel}>
+                              {decode(manga.item.s)}
+                            </div>
+                          </Link>
+                        ))}
+                    </div>
+                  );
+                return <></>;
+              })()}
             </Col>
           </Row>
         </Container>

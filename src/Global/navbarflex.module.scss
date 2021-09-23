@@ -5,13 +5,22 @@
 
 .navitem:hover,
 .dropdownitem:hover {
-  color: #fff;
+  color: white;
   background: #666;
   text-decoration: none;
 }
 
 .active {
-  color: #fff;
+  color: white;
+}
+
+.QuickSearch {
+  padding: 0;
+}
+
+.QuickSearch span {
+  background-color: white;
+  cursor: pointer;
 }
 
 .QuickSearch * {
@@ -19,39 +28,11 @@
   border: none;
 }
 
-.QuickSearch .form-control {
-  border-right: none;
-}
-
-.QuickSearch .input-group-text {
-  background-color: #fff;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.QuickSearch .mx-auto {
-  background-color: #ff0;
-  margin: 10px;
-  text-align: center;
-}
-
-#Nav .LogoBox {
-  text-align: left;
-}
-
-@media (max-width: 768px) {
-  #Nav .LogoBox {
-    text-align: center;
-  }
-}
-
 .QuickSearch .SearchResult {
   position: absolute;
-  top: 42px;
-  left: 0;
-  padding: 15px;
   width: 100%;
-  z-index: 1000;
+  z-index: 2000;
+  background-color: #ddeaff;
 }
 
 .QuickSearch .SearchResultLabel {
@@ -60,27 +41,27 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
+  vertical-align: middle;
 }
 
-.QuickSearch .SearchResultCover {
-  background-color: #ddeaff;
+.QuickSearch .SearchResult img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 5px;
 }
 
 .SearchLink {
   display: block !important;
-  color: #343a40;
+  color: black;
 }
 
 .SearchLink:hover {
   cursor: pointer;
-  color: #fff;
+  color: white;
   background-color: #247d8f;
   text-decoration: none;
-}
-
-.NoResults {
-  padding: 10px;
-  color: #000;
 }
 
 .QuickSearch .input-group * {

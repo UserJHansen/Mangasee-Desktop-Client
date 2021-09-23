@@ -24,6 +24,7 @@ export default class StorageHandler extends ElectronStore {
         lastLatest: { type: 'array' },
         lastSubbed: { type: 'array' },
         lastSubFeed: { type: 'array' },
+        lastSearchableList: { type: 'array' },
         history: { type: 'array' },
       },
     });
