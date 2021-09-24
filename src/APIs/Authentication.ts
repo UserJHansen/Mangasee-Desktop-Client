@@ -18,8 +18,6 @@ export default class Authentication {
     if (data.success === true) {
       this.store.set('email', email);
       this.store.set('wasLoggedIn', true);
-
-      mutate('/api/loggedIn');
       return true;
     }
     return data.val;

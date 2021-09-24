@@ -19,16 +19,16 @@ import Settings from './Settings/Settings';
 import Subscriptions from './Subscriptions/Subscriptions';
 
 export default function Router() {
-  const { data: isLoggedInQuick } = useSWR('/api/loggedIn/quick');
-  const { data: isLoggedIn } = useSWR('/api/loggedIn');
+  const { data: isLoggedIn } = useSWR('/api/loggedIn', {
+    suspense: true,
+  });
 
-  if (typeof isLoggedIn === 'boolean')
-    new Store().set('wasLoggedIn', isLoggedIn);
+  new Store().set('wasLoggedIn', isLoggedIn);
 
   return (
     <HashRouter>
       <Switch>
-        {isLoggedIn || isLoggedInQuick ? (
+        {isLoggedIn ? (
           <React.Fragment key="loggedin">
             <Navbar />
             <Container>

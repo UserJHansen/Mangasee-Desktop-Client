@@ -2,20 +2,10 @@ import axios from 'axios';
 import Store from './storage';
 import { FindVariable } from '../Global/getJsVar';
 
-function checkRegexForSwitch(regex: RegExp, str: string) {
-  return str.match(regex)?.input;
-}
-
-function checkStringForSwitch(regex: string, str: string) {
-  return str.match(new RegExp(`${regex}.*`))?.input;
-}
-
 export default function mangaAPIFetcher(query: string) {
-  const online = !/.*\/quick\//.test(query) && navigator.onLine;
-
   // Offline Friendly requests
   switch (query) {
-    case checkRegexForSwitch(/\/add\/(.*)\/(.*)/g, query): {
+    case query.match(/\/add\/(.*)\/(.*)/g)?.input: {
       const value = /\/add\/(.*)\/(.*)/g.exec(query)?.[2];
       switch (/\/add\/(.*)\/(.*)/g.exec(query)?.[1]) {
         case 'History':
@@ -28,8 +18,9 @@ export default function mangaAPIFetcher(query: string) {
         default:
           return undefined;
       }
+      break;
     }
-    case checkRegexForSwitch(/\/set\/(.*)\/(.*)/g, query): {
+    case query.match(/\/set\/(.*)\/(.*)/g)?.input: {
       const value = /\/set\/(.*)\/(.*)/g.exec(query)?.[2];
       switch (/\/set\/(.*)\/(.*)/g.exec(query)?.[1]) {
         case 'FullPage': {
@@ -38,24 +29,25 @@ export default function mangaAPIFetcher(query: string) {
         default:
           return undefined;
       }
+      break;
     }
-    case checkStringForSwitch('/api/History', query):
+    case '/api/History':
       return new Store().get('History') || [];
-    case checkStringForSwitch('/prefs/FullPage', query):
+    case '/prefs/FullPage':
       return new Store().get('wasLoggedIn');
-    case checkStringForSwitch('/history/Clear', query):
+    case '/history/Clear':
       return new Store().delete('history');
     // no default
   }
 
   // Requests that require to be online
-  if (online) {
+  if (navigator.onLine) {
     switch (query) {
-      case checkStringForSwitch('/api/loggedIn', query):
+      case '/api/loggedIn':
         return axios
           .get('https://mangasee123.com/user/subscription.get.php')
           .then((res) => res.data.success);
-      case checkStringForSwitch('/api/allManga', query):
+      case '/api/allManga':
         return fetch('https://mangasee123.com/directory/index.php')
           .then((response) => response.text())
           .then((text) =>
@@ -63,7 +55,7 @@ export default function mangaAPIFetcher(query: string) {
               ? JSON.parse(<string>FindVariable('vm.FullDirectory', text))
               : FindVariable('vm.FullDirectory', text)
           );
-      case checkStringForSwitch('/api/Recommendations', query):
+      case '/api/Recommendations':
         return fetch('https://mangasee123.com/index.php')
           .then((response) => response.text())
           .then((text) =>
@@ -71,7 +63,7 @@ export default function mangaAPIFetcher(query: string) {
               ? JSON.parse(<string>FindVariable('vm.RecommendationJSON', text))
               : ''
           );
-      case checkStringForSwitch('/api/Hot', query):
+      case '/api/Hot':
         return fetch('https://mangasee123.com/index.php')
           .then((response) => response.text())
           .then((text) =>
@@ -79,7 +71,7 @@ export default function mangaAPIFetcher(query: string) {
               ? JSON.parse(<string>FindVariable('vm.HotUpdateJSON', text))
               : FindVariable('vm.HotUpdateJSON', text)
           );
-      case checkStringForSwitch('/api/TopTen', query):
+      case '/api/TopTen':
         return fetch('https://mangasee123.com/index.php')
           .then((response) => response.text())
           .then((text) =>
@@ -87,7 +79,7 @@ export default function mangaAPIFetcher(query: string) {
               ? JSON.parse(<string>FindVariable('vm.TopTenJSON', text))
               : FindVariable('vm.TopTenJSON', text)
           );
-      case checkStringForSwitch('/api/Latest', query):
+      case '/api/Latest':
         return fetch('https://mangasee123.com/index.php')
           .then((response) => response.text())
           .then((text) =>
@@ -95,7 +87,7 @@ export default function mangaAPIFetcher(query: string) {
               ? JSON.parse(<string>FindVariable('vm.LatestJSON', text))
               : FindVariable('vm.LatestJSON', text)
           );
-      case checkStringForSwitch('/api/SubFeed', query):
+      case '/api/SubFeed':
         return fetch('https://mangasee123.com/index.php')
           .then((response) => response.text())
           .then((text) =>
@@ -105,11 +97,11 @@ export default function mangaAPIFetcher(query: string) {
                 )
               : FindVariable('vm.SubscriptionFeedJSON', text)
           );
-      case checkStringForSwitch('/api/Subbed', query):
+      case '/api/Subbed':
         return axios('https://mangasee123.com/user/subscription.get.php').then(
           (res) => res.data.val
         );
-      case checkStringForSwitch('/api/NewSeries', query):
+      case '/api/NewSeries':
         return fetch('https://mangasee123.com/index.php')
           .then((response) => response.text())
           .then((text) =>
@@ -117,7 +109,7 @@ export default function mangaAPIFetcher(query: string) {
               ? JSON.parse(<string>FindVariable('vm.NewSeriesJSON', text))
               : FindVariable('vm.NewSeriesJSON', text)
           );
-      case checkStringForSwitch('/api/FullDirectory', query):
+      case '/api/FullDirectory':
         return fetch('https://mangasee123.com/directory/')
           .then((response) => response.text())
           .then((text) =>
@@ -125,35 +117,29 @@ export default function mangaAPIFetcher(query: string) {
               ? JSON.parse(<string>FindVariable('vm.FullDirectory', text))
               : FindVariable('vm.FullDirectory', text)
           );
-      case checkStringForSwitch('/api/SearchableList', query):
-        return axios
-          .get('https://mangasee123.com/_search.php')
-          .then((res) => res.data);
       default:
         return undefined;
     }
   }
   switch (query) {
-    case checkStringForSwitch('/api/loggedIn', query):
+    case '/api/loggedIn':
       return new Store().get('wasLoggedIn');
-    case checkStringForSwitch('/api/allManga', query):
+    case '/api/allManga':
       return new Store().get('mangaList');
-    case checkStringForSwitch('/api/Recommendations', query):
+    case '/api/Recommendations':
       return new Store().get('lastRecommendations');
-    case checkStringForSwitch('/api/Hot', query):
+    case '/api/Hot':
       return new Store().get('lastHot');
-    case checkStringForSwitch('/api/TopTen', query):
+    case '/api/TopTen':
       return new Store().get('lastTopTen');
-    case checkStringForSwitch('/api/Latest', query):
+    case '/api/Latest':
       return new Store().get('lastLatest');
-    case checkStringForSwitch('/api/Subbed', query):
+    case '/api/Subbed':
       return new Store().get('lastSubbed');
-    case checkStringForSwitch('/api/SubFeed', query):
+    case '/api/SubFeed':
       return new Store().get('lastSubFeed');
-    case checkStringForSwitch('/api/NewSeries', query):
+    case '/api/NewSeries':
       return new Store().get('lastNewSeries');
-    case checkStringForSwitch('/api/SearchableList', query):
-      return new Store().get('lastSearchableList');
     default:
       return undefined;
   }

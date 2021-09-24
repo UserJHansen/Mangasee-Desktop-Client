@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { shell } from 'electron';
+import { mutate } from 'swr';
 
 import Authentication from '../APIs/Authentication';
 import Store from '../APIs/storage';
@@ -11,6 +12,11 @@ import icon from '../../assets/icon.svg';
 export default function Home() {
   const authentication = new Authentication();
   const store = new Store();
+
+  document.getElementsByTagName('html')[0].classList.add(animations.spin);
+  document
+    .getElementsByTagName('body')[0]
+    .classList.add(animations.spinReverse);
 
   const [email, setEmail] = useState(
     typeof store.get('email') === 'string' ? (store.get('email') as string) : ''
@@ -36,7 +42,7 @@ export default function Home() {
   }
 
   return (
-    <div className={animations.spin}>
+    <>
       <Alert
         show={shouldShowAlert}
         variant="danger"
@@ -48,7 +54,7 @@ export default function Home() {
       >
         {AlertText}
       </Alert>
-      <div className="box">
+      <div className="box centered">
         <form
           onSubmit={async (event) => {
             event.preventDefault();
@@ -57,6 +63,14 @@ export default function Home() {
 
             if (result !== true) {
               showAlert(result);
+            } else {
+              document
+                .getElementsByTagName('html')[0]
+                .classList.remove(animations.spin);
+              document
+                .getElementsByTagName('body')[0]
+                .classList.remove(animations.spinReverse);
+              mutate('/api/loggedIn');
             }
           }}
         >
@@ -72,13 +86,7 @@ export default function Home() {
             }}
           />
           <div className="mb-3">
-            <label
-              htmlFor="EmailInput"
-              className="form-label"
-              style={{
-                width: '100%',
-              }}
-            >
+            <label htmlFor="EmailInput" className="form-label">
               Email address:
               <input
                 type="email"
@@ -92,13 +100,7 @@ export default function Home() {
             </label>
           </div>
           <div className="mb-3">
-            <label
-              htmlFor="PasswordInput"
-              className="form-label"
-              style={{
-                width: '100%',
-              }}
-            >
+            <label htmlFor="PasswordInput" className="form-label">
               Password:
               <input
                 type="password"
@@ -138,6 +140,6 @@ export default function Home() {
           </button>
         </form>
       </div>
-    </div>
+    </>
   );
 }
