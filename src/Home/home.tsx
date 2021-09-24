@@ -25,31 +25,51 @@ import MangaResult from '../Interfaces/MangaResult';
 import Store from '../APIs/storage';
 
 export default function Home() {
-  const { data: Recommendations } = useSWR('/api/Recommendations');
-  const { data: Hot } = useSWR('/api/Hot');
-  const { data: TopTen } = useSWR('/api/TopTen');
-  const { data: Latest } = useSWR('/api/Latest');
-  const { data: Subbed } = useSWR('/api/Subbed');
-  const { data: SubFeed } = useSWR('/api/SubFeed');
-  const { data: History } = useSWR('/api/History');
-  const { data: NewSeries } = useSWR('/api/NewSeries');
+  const { data: RecommendationsQuick } = useSWR('/api/Recommendations/quick');
+  const { data: HotQuick } = useSWR('/api/Hot/quick');
+  const { data: TopTenQuick } = useSWR('/api/TopTen/quick');
+  const { data: LatestQuick } = useSWR('/api/Latest/quick');
+  const { data: SubbedQuick } = useSWR('/api/Subbed/quick');
+  const { data: SubFeedQuick } = useSWR('/api/SubFeed/quick');
+  const { data: HistoryQuick } = useSWR('/api/History/quick');
+  const { data: NewSeriesQuick } = useSWR('/api/NewSeries/quick');
+  let { data: Recommendations } = useSWR('/api/Recommendations');
+  let { data: Hot } = useSWR('/api/Hot');
+  let { data: TopTen } = useSWR('/api/TopTen');
+  let { data: Latest } = useSWR('/api/Latest');
+  let { data: Subbed } = useSWR('/api/Subbed');
+  let { data: SubFeed } = useSWR('/api/SubFeed');
+  let { data: History } = useSWR('/api/History');
+  let { data: NewSeries } = useSWR('/api/NewSeries');
 
-  if (
-    !(
-      Recommendations &&
-      Hot &&
-      TopTen &&
-      Latest &&
-      Subbed &&
-      SubFeed &&
-      History &&
-      NewSeries
-    )
-  )
-    return <>Loading...</>;
+  const loaded = [
+    Recommendations,
+    Hot,
+    TopTen,
+    Latest,
+    Subbed,
+    SubFeed,
+    History,
+    NewSeries,
+  ].every((value) => {
+    return typeof value !== 'undefined';
+  });
+
+  const cacheLoaded = [
+    Recommendations,
+    Hot,
+    TopTen,
+    Latest,
+    Subbed,
+    SubFeed,
+    History,
+    NewSeries,
+  ].every((value) => {
+    return typeof value !== 'undefined';
+  });
 
   const store = new Store();
-  if (navigator.onLine) {
+  if (navigator.onLine && loaded) {
     store.set('lastRecommendations', Recommendations);
     store.set('lastHot', Hot);
     store.set('lastTopTen', TopTen);
@@ -58,69 +78,96 @@ export default function Home() {
     store.set('lastSubFeed', SubFeed);
     store.set('lastNewSeries', NewSeries);
   }
+
+  if (!loaded && cacheLoaded) {
+    Recommendations = RecommendationsQuick;
+    Hot = HotQuick;
+    TopTen = TopTenQuick;
+    Latest = LatestQuick;
+    Subbed = SubbedQuick;
+    SubFeed = SubFeedQuick;
+    History = HistoryQuick;
+    NewSeries = NewSeriesQuick;
+  } else if (!loaded && !cacheLoaded) {
+    Recommendations = [];
+    Hot = [];
+    TopTen = [];
+    Latest = [];
+    Subbed = [];
+    SubFeed = [];
+    History = [];
+    NewSeries = [];
+  }
+
   const Recommendation =
     Recommendations[Math.floor(Math.random() * Recommendations.length)];
 
   return (
     <Row>
-      <Box width={8} icon={faThumbsUp} title="Admin Recommendation">
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <Link to={`/manga/${Recommendation.IndexName}`}>
-                  <div className={CSS.image}>
-                    <img
-                      src={`https://cover.nep.li/cover/${Recommendation.IndexName}.jpg`}
-                      alt="Cover"
-                      style={{ maxWidth: 100 }}
-                    />
+      {Recommendation !== undefined ? (
+        <Box width={8} icon={faThumbsUp} title="Admin Recommendation">
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <Link to={`/manga/${Recommendation.IndexName}`}>
+                    <div className={CSS.image}>
+                      <img
+                        src={`https://cover.nep.li/cover/${Recommendation.IndexName}.jpg`}
+                        alt="Cover"
+                        style={{ maxWidth: 100 }}
+                      />
+                    </div>
+                  </Link>
+                </td>
+                <td valign="top" className={CSS.admininfo}>
+                  <Link
+                    to={`/manga/${Recommendation.IndexName}`}
+                    title={`Read ${Recommendation.SeriesName}`}
+                    className={CSS.adminname}
+                  >
+                    {Recommendation.SeriesName}
+                  </Link>
+                  <div className="top-5">
+                    Year:{' '}
+                    <Link to={`/search/?year=${Recommendation.Year}`}>
+                      {Recommendation.Year}
+                    </Link>
                   </div>
-                </Link>
-              </td>
-              <td valign="top" className={CSS.admininfo}>
-                <Link
-                  to={`/manga/${Recommendation.IndexName}`}
-                  title={`Read ${Recommendation.SeriesName}`}
-                  className={CSS.adminname}
-                >
-                  {Recommendation.SeriesName}
-                </Link>
-                <div className="top-5">
-                  Year:{' '}
-                  <Link to={`/search/?year=${Recommendation.Year}`}>
-                    {Recommendation.Year}
-                  </Link>
-                </div>
-                <div className="top-5">
-                  Status:{' '}
-                  <Link to={`/search/?status=${Recommendation.ScanStatus}`}>
-                    {Recommendation.ScanStatus} (Scan)
-                  </Link>
-                  {', '}
-                  <Link to={`/search/?pstatus=${Recommendation.PublishStatus}`}>
-                    {Recommendation.ScanStatus} (Publish)
-                  </Link>
-                </div>
-                <div className="top-5">
-                  Genres:{' '}
-                  {Recommendation.Genres.map((Genre: string) => {
-                    return (
-                      <Link key={Genre} to={`/search/?genre=${Genre}`}>
-                        {Genre}
-                      </Link>
-                    );
-                  }).reduce((prev: JSX.Element, curr: JSX.Element) => [
-                    prev,
-                    ', ',
-                    curr,
-                  ])}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </Box>
+                  <div className="top-5">
+                    Status:{' '}
+                    <Link to={`/search/?status=${Recommendation.ScanStatus}`}>
+                      {Recommendation.ScanStatus} (Scan)
+                    </Link>
+                    {', '}
+                    <Link
+                      to={`/search/?pstatus=${Recommendation.PublishStatus}`}
+                    >
+                      {Recommendation.ScanStatus} (Publish)
+                    </Link>
+                  </div>
+                  <div className="top-5">
+                    Genres:{' '}
+                    {Recommendation.Genres.map((Genre: string) => {
+                      return (
+                        <Link key={Genre} to={`/search/?genre=${Genre}`}>
+                          {Genre}
+                        </Link>
+                      );
+                    }).reduce((prev: JSX.Element, curr: JSX.Element) => [
+                      prev,
+                      ', ',
+                      curr,
+                    ])}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </Box>
+      ) : (
+        <></>
+      )}
       <Col lg={4} className={CSS.berserkimage}>
         <Link to="/manga/Berserk">
           <img

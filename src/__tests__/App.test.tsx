@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import React, { Suspense } from 'react';
+import React from 'react';
 
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
@@ -15,17 +15,15 @@ describe('App', () => {
   it('should render', () => {
     expect(
       render(
-        <Suspense fallback={<>Loading... </>}>
-          <SWRConfig
-            value={{
-              fetcher: mangaAPIFetcher,
-              revalidateOnFocus: false,
-              revalidateOnReconnect: false,
-            }}
-          >
-            <Router />
-          </SWRConfig>
-        </Suspense>
+        <SWRConfig
+          value={{
+            fetcher: mangaAPIFetcher,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+          }}
+        >
+          <Router />
+        </SWRConfig>
       )
     ).toBeTruthy();
   });
