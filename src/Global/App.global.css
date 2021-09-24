@@ -22,11 +22,6 @@ body {
   font-size: 2vw;
 }
 
-.centered {
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
 .no-scroll {
   overflow: scroll;
 }
@@ -63,6 +58,14 @@ li {
 
 .top-5 {
   margin-top: 5px;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.end-0 {
+  right: 0;
 }
 
 .bottom-20 {

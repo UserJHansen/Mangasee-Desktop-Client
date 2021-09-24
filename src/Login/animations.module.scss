@@ -1,6 +1,4 @@
 .spin {
-  --rotation: 180deg;
-  --nrotation: -180deg;
   background: linear-gradient(
     124deg,
     #47c2ff,
@@ -10,18 +8,13 @@
     #f75224
   );
   background-size: 1000% 1000%;
-  animation: Colour 80s linear infinite, Animate 40s ease-in-out infinite;
-  overflow: hidden;
-}
-.spinReverse {
-  overflow: auto;
-  background: none;
-  animation: AntiAnimate 40s ease-in-out infinite;
+  animation: Colour 80s linear infinite;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
+
 @keyframes Colour {
   0% {
     background-position: 0% 10%;
@@ -31,27 +24,5 @@
   }
   100% {
     background-position: 0% 10%;
-  }
-}
-@keyframes Animate {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(var(--rotation));
-  }
-  100% {
-    transform: rotate(var(--nrotation));
-  }
-}
-@keyframes AntiAnimate {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(var(--nrotation));
-  }
-  100% {
-    transform: rotate(var(--rotation));
   }
 }

@@ -117,6 +117,10 @@ export default function mangaAPIFetcher(query: string) {
               ? JSON.parse(<string>FindVariable('vm.FullDirectory', text))
               : FindVariable('vm.FullDirectory', text)
           );
+      case '/api/SearchableList':
+        return axios
+          .get('https://mangasee123.com/_search.php')
+          .then((res) => res.data);
       default:
         return undefined;
     }
