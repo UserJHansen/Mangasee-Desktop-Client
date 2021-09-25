@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { shell } from 'electron';
+import { useSWRConfig } from 'swr';
 
 import Authentication from '../APIs/Authentication';
 import Store from '../APIs/storage';
@@ -18,6 +19,8 @@ export default function Home() {
   const [password, setPassword] = useState('');
   const [shouldShowAlert, setShouldShowAlert] = useState(false);
   const [AlertText, setAlertText] = useState('');
+
+  const { mutate } = useSWRConfig();
 
   const showAlert = (text: string) => {
     setAlertText(text);
@@ -53,7 +56,11 @@ export default function Home() {
           onSubmit={async (event) => {
             event.preventDefault();
 
-            const result = await authentication.attemptLogin(email, password);
+            const result = await authentication.attemptLogin(
+              email,
+              password,
+              mutate
+            );
 
             if (result !== true) {
               showAlert(result);

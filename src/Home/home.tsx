@@ -22,17 +22,12 @@ import CSS from './home.module.scss';
 import { chapterURLEncode, ChapterDisplay } from '../Global/DisplayTools';
 import MangaResult from '../Interfaces/MangaResult';
 
-import Store from '../APIs/storage';
-
 export default function Home() {
-  const { data: Recommendations } = useSWR('/api/Recommendations');
-  const { data: Hot } = useSWR('/api/Hot');
-  const { data: TopTen } = useSWR('/api/TopTen');
-  const { data: Latest } = useSWR('/api/Latest');
+  const {
+    data: { Recommendations, Hot, Latest, SubFeed, History, NewSeries },
+  } = useSWR('/api/set/home');
+
   const { data: Subbed } = useSWR('/api/Subbed');
-  const { data: SubFeed } = useSWR('/api/SubFeed');
-  const { data: History } = useSWR('/api/History');
-  const { data: NewSeries } = useSWR('/api/NewSeries');
 
   const Recommendation =
     Recommendations[Math.floor(Math.random() * Recommendations.length)];

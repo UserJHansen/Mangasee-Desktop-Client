@@ -8,15 +8,14 @@ export function FindVariable(
   split = '\n',
   trim = true
 ) {
-  const ScriptArray = SeparateLines(script, split, trim);
-  const variableRegex = new RegExp(`${target}(?: *= *)(.+)(?=;?)`);
+  const variableRegex = new RegExp(
+    `${split}.*?${target}(?: *= *)(.+?)${split}`,
+    's'
+  );
 
-  for (let lineNo = 0; lineNo < ScriptArray.length; lineNo += 1) {
-    if (variableRegex.test(ScriptArray[lineNo])) {
-      return variableRegex.exec(ScriptArray[lineNo])?.[1].replace(/;$/, '');
-    }
-  }
-  return '';
+  return trim
+    ? variableRegex.exec(script)?.[1].replace(/;/g, '').trim() || ''
+    : variableRegex.exec(script)?.[1].trim().replace(/;/g, '') || '';
 }
 
 export function FindVariableArray(

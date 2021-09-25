@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Link, useHistory } from 'react-router-dom';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { decode } from 'he';
 import Fuse from 'fuse.js';
 
@@ -36,6 +36,8 @@ export default function Navbar() {
   const { data: SearchableList } = useSWR('/api/SearchableList');
   const history = useHistory();
   const [searchTerm, setSearchTerm] = React.useState('');
+
+  const { mutate } = useSWRConfig();
 
   const fuse = React.useMemo(
     () =>
@@ -189,7 +191,7 @@ export default function Navbar() {
                   </NavLink>
                 );
               })}
-              <NavDropdown.Item onClick={Authentication.logout}>
+              <NavDropdown.Item onClick={() => Authentication.logout(mutate)}>
                 <FontAwesomeIcon icon={faSignOutAlt} />
                 {' Logout'}
               </NavDropdown.Item>

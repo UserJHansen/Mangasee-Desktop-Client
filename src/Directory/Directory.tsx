@@ -23,7 +23,6 @@ import Box from '../Global/Box';
 
 import MangaReturn from '../Interfaces/MangaReturn';
 import fastFilter from '../Global/fastFilter';
-import Store from '../APIs/storage';
 
 function mergeGenres(genres: number[], allGenres: string[]) {
   const genreArray = [];

@@ -5,12 +5,18 @@ import { FindVariable } from '../Global/getJsVar';
 // Based on Demo from https://swr.vercel.app/docs/advanced/cache#localstorage-based-persistent-cache
 export function storeBackupProvider() {
   // When initializing, we restore the data from `localStorage` into a map.
-  const map = new Map(new Store().get('mangaAPI-cache') as []);
+  const debug = process?.env?.NODE_ENV === 'development';
 
-  function save() {
-    const appCache = Array.from(map.entries());
-    new Store().set('mangaAPI-cache', appCache);
-  }
+  const map = debug
+    ? new Map()
+    : new Map(new Store().get('mangaAPI-cache') as []);
+
+  const save = debug
+    ? () => {}
+    : () => {
+        const appCache = Array.from(map.entries());
+        new Store().set('mangaAPI-cache', appCache);
+      };
 
   // Before unloading the app, we write back all the data into `localStorage`.
   window.addEventListener('beforeunload', save);
@@ -68,74 +74,57 @@ export default function mangaAPIFetcher(query: string) {
       return fetch('https://mangasee123.com/directory/index.php')
         .then((response) => response.text())
         .then((text) =>
-          typeof FindVariable('vm.FullDirectory', text) === 'string'
-            ? JSON.parse(<string>FindVariable('vm.FullDirectory', text))
-            : FindVariable('vm.FullDirectory', text)
-        );
-    case '/api/Recommendations':
-      return fetch('https://mangasee123.com/index.php')
-        .then((response) => response.text())
-        .then((text) =>
-          typeof FindVariable('vm.RecommendationJSON', text) === 'string'
-            ? JSON.parse(<string>FindVariable('vm.RecommendationJSON', text))
-            : ''
-        );
-    case '/api/Hot':
-      return fetch('https://mangasee123.com/index.php')
-        .then((response) => response.text())
-        .then((text) =>
-          typeof FindVariable('vm.HotUpdateJSON', text) === 'string'
-            ? JSON.parse(<string>FindVariable('vm.HotUpdateJSON', text))
-            : FindVariable('vm.HotUpdateJSON', text)
-        );
-    case '/api/TopTen':
-      return fetch('https://mangasee123.com/index.php')
-        .then((response) => response.text())
-        .then((text) =>
-          typeof FindVariable('vm.TopTenJSON', text) === 'string'
-            ? JSON.parse(<string>FindVariable('vm.TopTenJSON', text))
-            : FindVariable('vm.TopTenJSON', text)
-        );
-    case '/api/Latest':
-      return fetch('https://mangasee123.com/index.php')
-        .then((response) => response.text())
-        .then((text) =>
-          typeof FindVariable('vm.LatestJSON', text) === 'string'
-            ? JSON.parse(<string>FindVariable('vm.LatestJSON', text))
-            : FindVariable('vm.LatestJSON', text)
-        );
-    case '/api/SubFeed':
-      return fetch('https://mangasee123.com/index.php')
-        .then((response) => response.text())
-        .then((text) =>
-          typeof FindVariable('vm.SubscriptionFeedJSON', text) === 'string'
-            ? JSON.parse(<string>FindVariable('vm.SubscriptionFeedJSON', text))
-            : FindVariable('vm.SubscriptionFeedJSON', text)
+          JSON.parse(<string>FindVariable('vm.FullDirectory', text))
         );
     case '/api/Subbed':
       return axios('https://mangasee123.com/user/subscription.get.php').then(
         (res) => res.data.val
       );
-    case '/api/NewSeries':
-      return fetch('https://mangasee123.com/index.php')
-        .then((response) => response.text())
-        .then((text) =>
-          typeof FindVariable('vm.NewSeriesJSON', text) === 'string'
-            ? JSON.parse(<string>FindVariable('vm.NewSeriesJSON', text))
-            : FindVariable('vm.NewSeriesJSON', text)
-        );
     case '/api/FullDirectory':
       return fetch('https://mangasee123.com/directory/')
         .then((response) => response.text())
         .then((text) =>
-          typeof FindVariable('vm.FullDirectory', text) === 'string'
-            ? JSON.parse(<string>FindVariable('vm.FullDirectory', text))
-            : FindVariable('vm.FullDirectory', text)
+          JSON.parse(<string>FindVariable('vm.FullDirectory', text))
         );
     case '/api/SearchableList':
       return axios
         .get('https://mangasee123.com/_search.php')
         .then((res) => res.data);
+    case '/api/set/home':
+      return fetch('https://mangasee123.com/index.php')
+        .then((response) => response.text())
+        .then((text) => {
+          return {
+            Recommendations: JSON.parse(
+              <string>FindVariable('vm.RecommendationJSON', text)
+            ),
+            Hot: JSON.parse(<string>FindVariable('vm.HotUpdateJSON', text)),
+            Latest: JSON.parse(<string>FindVariable('vm.LatestJSON', text)),
+            SubFeed: JSON.parse(
+              <string>FindVariable('vm.SubscriptionFeedJSON', text)
+            ),
+            NewSeries: JSON.parse(
+              <string>FindVariable('vm.NewSeriesJSON', text)
+            ),
+            History: new Store().get('history'),
+          };
+        });
+    case '/api/set/search':
+      return fetch('https://mangasee123.com/search/')
+        .then((response) => response.text())
+        .then((text) => {
+          return {
+            AvailableFilters: JSON.parse(
+              <string>(
+                FindVariable('vm.AvailableFilters', text, ';')?.replace(
+                  /'/g,
+                  '"'
+                )
+              )
+            ),
+            Directory: JSON.parse(<string>FindVariable('vm.Directory', text)),
+          };
+        });
     default:
       return undefined;
   }
