@@ -7,8 +7,6 @@ import useSWR from 'swr';
 import { Container } from 'react-bootstrap';
 import Navbar from './Global/navbar';
 
-import Store from './APIs/storage';
-
 import Home from './Home/home';
 import Login from './Login/login';
 import Search from './Search/Search';
@@ -19,11 +17,7 @@ import Settings from './Settings/Settings';
 import Subscriptions from './Subscriptions/Subscriptions';
 
 export default function Router() {
-  const { data: isLoggedIn } = useSWR('/api/loggedIn', {
-    suspense: true,
-  });
-
-  new Store().set('wasLoggedIn', isLoggedIn);
+  const { data: isLoggedIn } = useSWR('/api/loggedIn');
 
   return (
     <HashRouter>

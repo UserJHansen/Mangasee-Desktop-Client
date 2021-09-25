@@ -50,12 +50,6 @@ export default function Navbar() {
     [SearchableList]
   );
 
-  if (!SearchableList) return <>Loading...</>;
-  if (navigator.onLine) {
-    const store = new Store();
-    store.set('lastSearchableList', SearchableList);
-  }
-
   const results: Fuse.FuseResult<MangaReturn>[] = fuse.search(searchTerm);
 
   function quickSearchSubmit() {

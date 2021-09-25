@@ -17,9 +17,8 @@ export default class Authentication {
 
     if (data.success === true) {
       this.store.set('email', email);
-      this.store.set('wasLoggedIn', true);
 
-      mutate('/api/loggedIn');
+      mutate('/api/loggedIn', true);
       return true;
     }
     return data.val;
@@ -29,6 +28,6 @@ export default class Authentication {
     new Store().set('wasLoggedIn', false);
     return axios
       .get('https://mangasee123.com/auth/logout.php')
-      .then(() => mutate('/api/loggedIn'));
+      .then(() => mutate('/api/loggedIn', false));
   }
 }

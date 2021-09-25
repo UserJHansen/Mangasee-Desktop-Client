@@ -34,30 +34,6 @@ export default function Home() {
   const { data: History } = useSWR('/api/History');
   const { data: NewSeries } = useSWR('/api/NewSeries');
 
-  if (
-    !(
-      Recommendations &&
-      Hot &&
-      TopTen &&
-      Latest &&
-      Subbed &&
-      SubFeed &&
-      History &&
-      NewSeries
-    )
-  )
-    return <>Loading...</>;
-
-  const store = new Store();
-  if (navigator.onLine) {
-    store.set('lastRecommendations', Recommendations);
-    store.set('lastHot', Hot);
-    store.set('lastTopTen', TopTen);
-    store.set('lastLatest', Latest);
-    store.set('lastSubbed', Subbed);
-    store.set('lastSubFeed', SubFeed);
-    store.set('lastNewSeries', NewSeries);
-  }
   const Recommendation =
     Recommendations[Math.floor(Math.random() * Recommendations.length)];
 

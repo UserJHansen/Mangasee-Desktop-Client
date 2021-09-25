@@ -8,24 +8,15 @@ export default class StorageHandler extends ElectronStore {
           type: 'string',
           format: 'email',
         },
-        wasLoggedIn: {
+        fullPage: {
           type: 'boolean',
           default: false,
         },
-        FullPage: {
-          type: 'boolean',
-          default: false,
+        history: { type: 'array', default: [] },
+        'mangaAPI-cache': {
+          type: 'array',
+          default: [],
         },
-        lastFullDirectory: { type: 'object' },
-        mangaList: { type: 'array' },
-        lastRecommendations: { type: 'array' },
-        lastHot: { type: 'array' },
-        lastTopTen: { type: 'array' },
-        lastLatest: { type: 'array' },
-        lastSubbed: { type: 'array' },
-        lastSubFeed: { type: 'array' },
-        lastSearchableList: { type: 'array' },
-        history: { type: 'array' },
       },
     });
   }

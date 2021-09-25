@@ -70,12 +70,6 @@ export default function Directory() {
   };
   React.useEffect(forceReload, [FullDirectory, selected]);
 
-  if (!FullDirectory) return <>Loading...</>;
-  if (navigator.onLine) {
-    const store = new Store();
-    store.set('lastFullDirectory', FullDirectory);
-  }
-
   if (firstLoad) {
     loadMore();
     setfirstLoad(false);
