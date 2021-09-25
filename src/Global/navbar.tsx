@@ -28,7 +28,6 @@ import {
 } from 'react-bootstrap';
 
 import Authentication from '../APIs/Authentication';
-import Store from '../APIs/storage';
 import MangaReturn from '../Interfaces/MangaReturn';
 
 import CSS from './navbarflex.module.scss';
