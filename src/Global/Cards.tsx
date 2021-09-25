@@ -49,7 +49,7 @@ export function ThinCard({ children, link, title, src }: ThinCardProps) {
     throw new TypeError('Children Should be a String or an Array');
   }
   return (
-    <Col lg={2} md={4} sm={5} xs={12} className={CSS.box}>
+    <Col lg={2} md={4} sm={6} xs={12} className={CSS.box}>
       <Link to={link} title={title} style={{ color: '#fff' }}>
         <img className={CSS.image} src={src} alt="Cover" />
         <div className={CSS.overlay}>
