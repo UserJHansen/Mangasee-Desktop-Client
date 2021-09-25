@@ -110,7 +110,12 @@ export default function Navbar() {
               {(() => {
                 if (searchTerm.length > 1)
                   return results.length === 0 ? (
-                    <div className={CSS.SearchResult}>No Results</div>
+                    <div
+                      className={CSS.SearchResult}
+                      style={{ padding: 10, color: 'black' }}
+                    >
+                      No Results
+                    </div>
                   ) : (
                     <div className={CSS.SearchResult}>
                       {results

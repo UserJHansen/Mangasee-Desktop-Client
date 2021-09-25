@@ -18,7 +18,6 @@ export default function mangaAPIFetcher(query: string) {
         default:
           return undefined;
       }
-      break;
     }
     case query.match(/\/set\/(.*)\/(.*)/g)?.input: {
       const value = /\/set\/(.*)\/(.*)/g.exec(query)?.[2];
@@ -29,7 +28,6 @@ export default function mangaAPIFetcher(query: string) {
         default:
           return undefined;
       }
-      break;
     }
     case '/api/History':
       return new Store().get('History') || [];
