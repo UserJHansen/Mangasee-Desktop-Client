@@ -57,7 +57,7 @@ export default function Box({
     </div>
   );
 
-  return width > 0 ? <Col xs={width}>{content}</Col> : content;
+  return width > 0 ? <Col lg={width}>{content}</Col> : content;
 }
 
 Box.defaultProps = {

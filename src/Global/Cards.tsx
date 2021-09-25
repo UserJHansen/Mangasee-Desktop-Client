@@ -62,7 +62,7 @@ export function ThinCard({ children, link, title, src }: ThinCardProps) {
 
 export function WideCard({ manga, subArr, hotArr }: WideCardProps) {
   return (
-    <Col md={12} xl={6}>
+    <Col sm={12} xl={6}>
       <Row className={CSS.largecard}>
         <Col xs={4} className={CSS.largeimage}>
           <Link to={`/manga/${manga.IndexName}`} title={manga.SeriesName}>
