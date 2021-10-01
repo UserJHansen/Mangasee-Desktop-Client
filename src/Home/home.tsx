@@ -24,10 +24,8 @@ import MangaResult from '../Interfaces/MangaResult';
 
 export default function Home() {
   const {
-    data: { Recommendations, Hot, Latest, SubFeed, History, NewSeries },
+    data: { Recommendations, Hot, Latest, SubFeed, History, NewSeries, Subbed },
   } = useSWR('/api/set/home');
-
-  const { data: Subbed } = useSWR('/api/Subbed');
 
   const Recommendation =
     Recommendations[Math.floor(Math.random() * Recommendations.length)];

@@ -91,24 +91,32 @@ export default function mangaAPIFetcher(query: string) {
         .get('https://mangasee123.com/_search.php')
         .then((res) => res.data);
     case '/api/set/home':
-      return fetch('https://mangasee123.com/index.php')
-        .then((response) => response.text())
-        .then((text) => {
-          return {
-            Recommendations: JSON.parse(
-              <string>FindVariable('vm.RecommendationJSON', text)
-            ),
-            Hot: JSON.parse(<string>FindVariable('vm.HotUpdateJSON', text)),
-            Latest: JSON.parse(<string>FindVariable('vm.LatestJSON', text)),
-            SubFeed: JSON.parse(
-              <string>FindVariable('vm.SubscriptionFeedJSON', text)
-            ),
-            NewSeries: JSON.parse(
-              <string>FindVariable('vm.NewSeriesJSON', text)
-            ),
-            History: new Store().get('history'),
-          };
-        });
+      return Promise.all([
+        fetch('https://mangasee123.com/index.php').then((response) =>
+          response.text()
+        ),
+        axios('https://mangasee123.com/user/subscription.get.php').then(
+          (res) => res.data.val
+        ),
+      ]).then((resultArray) => {
+        const index = resultArray[0];
+        const subscriptions = resultArray[1];
+        return {
+          Subbed: subscriptions,
+          Recommendations: JSON.parse(
+            <string>FindVariable('vm.RecommendationJSON', index)
+          ),
+          Hot: JSON.parse(<string>FindVariable('vm.HotUpdateJSON', index)),
+          Latest: JSON.parse(<string>FindVariable('vm.LatestJSON', index)),
+          SubFeed: JSON.parse(
+            <string>FindVariable('vm.SubscriptionFeedJSON', index)
+          ),
+          NewSeries: JSON.parse(
+            <string>FindVariable('vm.NewSeriesJSON', index)
+          ),
+          History: new Store().get('history'),
+        };
+      });
     case '/api/set/search':
       return fetch('https://mangasee123.com/search/')
         .then((response) => response.text())
