@@ -73,13 +73,11 @@ export default function Home() {
                 </div>
                 <div className="top-5">
                   Genres:{' '}
-                  {Recommendation.Genres.map((Genre: string) => {
-                    return (
-                      <Link key={Genre} to={`/search/?genre=${Genre}`}>
-                        {Genre}
-                      </Link>
-                    );
-                  }).reduce((prev: JSX.Element, curr: JSX.Element) => [
+                  {Recommendation.Genres.map((Genre: string) => (
+                    <Link key={Genre} to={`/search/?genre=${Genre}`}>
+                      {Genre}
+                    </Link>
+                  )).reduce((prev: JSX.Element, curr: JSX.Element) => [
                     prev,
                     ', ',
                     curr,
@@ -112,7 +110,7 @@ export default function Home() {
         <Row className={CSS.hotcontent}>
           {Hot.slice(0, 12).map((Manga: MangaResult) => (
             <ThinCard
-              link={`/read/${Manga.IndexName}${chapterURLEncode(
+              link={`/read/${Manga.IndexName}/${chapterURLEncode(
                 Manga.Chapter
               )}`}
               src={`https://cover.nep.li/cover/${Manga.IndexName}.jpg`}
@@ -179,7 +177,7 @@ export default function Home() {
                   <ListGroupItem
                     key={manga.IndexName + manga.Chapter}
                     as={Link}
-                    to={`/read/${manga.IndexName}${chapterURLEncode(
+                    to={`/read/${manga.IndexName}/${chapterURLEncode(
                       manga.Chapter
                     )}`}
                   >
@@ -207,7 +205,7 @@ export default function Home() {
                   <ListGroupItem
                     key={manga.IndexName + manga.Chapter}
                     as={Link}
-                    to={`/read/${manga.IndexName}${chapterURLEncode(
+                    to={`/read/${manga.IndexName}/${chapterURLEncode(
                       manga.Chapter
                     )}`}
                   >

@@ -15,6 +15,7 @@ import Discussion from './Discussion/Discussion';
 import Bookmarks from './Bookmarks/Bookmarks';
 import Settings from './Settings/Settings';
 import Subscriptions from './Subscriptions/Subscriptions';
+import ScrollToTop from './Global/ScrollToTop';
 
 export default function Router() {
   const { data: isLoggedIn } = useSWR('/api/loggedIn');
@@ -25,6 +26,7 @@ export default function Router() {
         {isLoggedIn ? (
           <React.Fragment key="loggedin">
             <Navbar />
+            <ScrollToTop />
             <Container>
               {/* List of Routes available when logged in */}
               {[

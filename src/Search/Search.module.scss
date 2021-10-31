@@ -1,0 +1,38 @@
+.SearchFilterNav {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 8px 0;
+}
+
+.FilterOptions .list-group-item {
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.FilterOptions .HeaderItem {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+}
+
+.FilterOptions .HeaderItem:hover {
+  color: #4b72b4;
+}
+
+.FilterOptions button:focus {
+  outline: 0;
+  outline-style: none;
+}
+
+.GrayLabel {
+  color: gray;
+}
+.SeriesName {
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.SeriesName:hover {
+  color: #e2800d;
+  text-decoration: none;
+}

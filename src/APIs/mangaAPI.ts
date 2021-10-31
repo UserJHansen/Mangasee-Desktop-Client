@@ -118,21 +118,11 @@ export default function mangaAPIFetcher(query: string) {
         };
       });
     case '/api/set/search':
-      return fetch('https://mangasee123.com/search/')
-        .then((response) => response.text())
-        .then((text) => {
-          return {
-            AvailableFilters: JSON.parse(
-              <string>(
-                FindVariable('vm.AvailableFilters', text, ';')?.replace(
-                  /'/g,
-                  '"'
-                )
-              )
-            ),
-            Directory: JSON.parse(<string>FindVariable('vm.Directory', text)),
-          };
-        });
+      return axios('https://mangasee123.com/search/search.php').then(
+        (results) => ({
+          Directory: results.data,
+        })
+      );
     default:
       return undefined;
   }

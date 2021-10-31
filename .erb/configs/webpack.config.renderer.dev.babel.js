@@ -25,7 +25,10 @@ const requiredByDLLConfig = module.parent.filename.includes(
 /**
  * Warn if the DLL is not built
  */
-if (!requiredByDLLConfig && !(fs.existsSync(dllDir) && fs.existsSync(manifest))) {
+if (
+  !requiredByDLLConfig &&
+  !(fs.existsSync(dllDir) && fs.existsSync(manifest))
+) {
   console.log(
     chalk.black.bgYellow.bold(
       'The DLL files are missing. Sit back while we build them for you with "yarn build-dll"'
@@ -60,6 +63,9 @@ export default merge(baseConfig, {
         use: [
           {
             loader: require.resolve('babel-loader'),
+            options: {
+              plugins: [require.resolve('react-refresh/babel')],
+            },
           },
         ],
       },
@@ -235,6 +241,8 @@ export default merge(baseConfig, {
     new webpack.LoaderOptionsPlugin({
       debug: true,
     }),
+
+    new ReactRefreshWebpackPlugin(),
   ],
 
   node: {
@@ -243,6 +251,7 @@ export default merge(baseConfig, {
   },
 
   devServer: {
+    hot: true,
     port,
     host: 'localhost',
     devMiddleware: {
@@ -253,8 +262,8 @@ export default merge(baseConfig, {
     static: {
       directory: path.resolve(__dirname, 'dist'),
       watch: {
-        ignored: /node_modules/
-      }
+        ignored: /node_modules/,
+      },
     },
     historyApiFallback: {
       verbose: true,
