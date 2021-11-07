@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import useSWR, { mutate } from 'swr';
+import { encode } from 'he';
 
 import {
   faAngleDoubleRight,
@@ -126,7 +127,17 @@ export default function Home() {
       </Box>
       <Col lg={12}>
         <div className={`no-scroll ${CSS.hotlist}`}>
-          <Link to="/search/?sort=vm&desc=true" className={CSS.hottext}>
+          <Link
+            to={`/search/${window.btoa(
+              JSON.stringify({
+                'Sort By': {
+                  open: true,
+                  selection: 'Most Popular (Monthly)',
+                },
+              })
+            )}`}
+            className={CSS.hottext}
+          >
             Hot This Month
           </Link>
           {Hot.slice(0, 6).map((Manga: MangaResult) => (

@@ -28,7 +28,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { decode } from 'he';
 
 import CSS from './Search.module.scss';
@@ -53,6 +53,7 @@ type FilterControls = {
   a: { open: boolean; selection: string };
   y: { open: boolean; selection: string };
 };
+type FilterControlsPartial = Partial<FilterControls>;
 
 type MangaSearchList = {
   i: string; // indexable Name
@@ -74,6 +75,10 @@ type MangaSearchList = {
 };
 
 export default function Search() {
+  const { overide } = useParams<{ overide?: string }>();
+  const overides: FilterControlsPartial = JSON.parse(
+    window.atob(overide || 'e30=')
+  );
   const defaultState: FilterControls = {
     'Sort By': { open: true, selection: 'Score' },
     'Official Translation': { open: false, selection: 'Any' },
@@ -97,8 +102,19 @@ export default function Search() {
   const [rendered, setRendered] = useState<Fuse.FuseResult<MangaSearchList>[]>(
     []
   );
-  const [showControl, setShowControl] = useState<FilterControls>(defaultState);
+  const [showControl, setShowControl] = useState<FilterControls>({
+    ...defaultState,
+    ...overides,
+  });
 
+  console.log(window.location.href);
+  if (showControl !== overides) {
+    window.history.pushState(
+      {},
+      '',
+      `/search?overide=${window.btoa(JSON.stringify(showControl))}`
+    );
+  }
   // https://github.com/microsoft/TypeScript/issues/23724#issuecomment-384807714
   function isKey<E>(str: string): str is Extract<keyof E, string> {
     return typeof str === 'string';
@@ -360,7 +376,7 @@ export default function Search() {
                         <div>
                           Author:{' '}
                           {manga.a.map((author, i) => (
-                            <>
+                            <React.Fragment key={manga.i + author}>
                               <a
                                 href="#"
                                 onClick={(event) => {
@@ -379,7 +395,7 @@ export default function Search() {
                                 {author}
                               </a>
                               {i < manga.a.length - 1 ? ', ' : ''}
-                            </>
+                            </React.Fragment>
                           ))}{' '}
                           &middot; Year:{' '}
                           <a
@@ -470,7 +486,7 @@ export default function Search() {
                     <div>
                       Genres:{' '}
                       {manga.g.map((genre, i) => (
-                        <>
+                        <React.Fragment key={manga.i + genre}>
                           <a
                             href="#"
                             onClick={(event) => {
@@ -548,7 +564,7 @@ export default function Search() {
                             {genre}
                           </a>
                           {i < manga.g.length - 1 ? ', ' : ''}
-                        </>
+                        </React.Fragment>
                       ))}
                     </div>
                     {isFull && manga.o === 'yes' && (
@@ -794,7 +810,7 @@ export default function Search() {
                         }}
                       >
                         {sort}
-                        {(typeof showControl[key].selection === 'string' &&
+                        {((typeof showControl[key].selection === 'string' &&
                           showControl[key].selection === sort) ||
                           (typeof showControl[key].selection === 'object' &&
                             (
@@ -805,13 +821,13 @@ export default function Search() {
                             (showControl[key].selection as SelectType).selected
                               .length === 0 &&
                             (showControl[key].selection as SelectType)
-                              .selectednot.length === 0 && (
-                              <FontAwesomeIcon
-                                icon={faCheck}
-                                className="float-right"
-                                style={{ color: 'green' }}
-                              />
-                            ))}
+                              .selectednot.length === 0)) && (
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            className="float-right"
+                            style={{ color: 'green' }}
+                          />
+                        )}
                         {typeof showControl[key].selection === 'object' &&
                           (
                             showControl[key].selection as SelectType

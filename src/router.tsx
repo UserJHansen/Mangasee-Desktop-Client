@@ -1,7 +1,7 @@
 import './Global/App.global.css';
 
 import React from 'react';
-import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import useSWR from 'swr';
 
 import { Container } from 'react-bootstrap';
@@ -20,20 +20,23 @@ import ScrollToTop from './Global/ScrollToTop';
 export default function Router() {
   const { data: isLoggedIn } = useSWR('/api/loggedIn');
 
+  // Use react router without hashrouter
+
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Switch>
         {isLoggedIn ? (
           <React.Fragment key="loggedin">
             <Navbar />
             <ScrollToTop />
             <Container>
+              <Route strict path="/Search/:overide" component={Search} />
               {/* List of Routes available when logged in */}
               {[
                 ['/', Home],
                 ['/home', Home],
-                ['/Search', Search],
                 ['/Directory', Directory],
+                ['/Search', Search],
                 ['/Discussion', Discussion],
                 ['/Bookmarks', Bookmarks],
                 ['/Settings', Settings],
@@ -56,6 +59,6 @@ export default function Router() {
           </React.Fragment>
         )}
       </Switch>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
