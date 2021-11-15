@@ -1,0 +1,19 @@
+{
+  "name": "mangasee-desktop-client",
+  "productName": "MangaseeDesktop",
+  "version": "0.0.1",
+  "description": "A Desktop client for Mangasee that uses the Electron React boilerplate for rapid application development",
+  "main": "./dist/main/main.js",
+  "author": {
+    "name": "James Hansen",
+    "email": "hansenjames09@gmail.com",
+    "url": "https://github.com/UserJHansen"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts",
+    "postinstall": "npm run electron-rebuild && npm run link-modules"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}

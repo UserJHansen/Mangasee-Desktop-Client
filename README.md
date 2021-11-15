@@ -16,7 +16,8 @@ First, clone the repo via git and install dependencies:
 
 ```bash
 git clone --depth 1 --single-branch https://github.com/UserJHansen/Mangasee-Desktop-Client.git
-yarn
+cd Mangasee-Desktop-Client
+npm install
 ```
 
 ## Starting Development
@@ -24,7 +25,7 @@ yarn
 Start the app in the `dev` environment:
 
 ```bash
-yarn start
+npm start
 ```
 
 ## Packaging for Production
@@ -32,7 +33,7 @@ yarn start
 To package apps for the local platform:
 
 ```bash
-yarn package
+npm run package
 ```
 
 ## Maintainers
