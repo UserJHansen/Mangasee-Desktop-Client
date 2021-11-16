@@ -37,15 +37,6 @@ export default {
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
     modules: [webpackPaths.srcPath, 'node_modules'],
-    fallback: {
-      crypto: require.resolve('crypto-browserify'),
-      path: require.resolve('path-browserify'),
-      // util: require.resolve('util-browserify'),
-      fs: false,
-      os: require.resolve('os-browserify'),
-      assert: require.resolve('assert'),
-      stream: require.resolve('stream-browserify'),
-    },
   },
 
   plugins: [
