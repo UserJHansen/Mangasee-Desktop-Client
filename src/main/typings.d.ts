@@ -10,7 +10,6 @@ declare global {
       key: keyof StorageType,
       value: StorageType[keyof StorageType]
     ) => void;
-    // getStore: () => StorageHandler;
-    openMangasee: () => never;
+    openMangasee: () => void;
   }
 }

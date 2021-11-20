@@ -20,6 +20,8 @@ cd Mangasee-Desktop-Client
 npm install
 ```
 
+Then create your own email and password for testing or just ignore the errors, you can put these into a logininfo.json file in the root directory.
+
 ## Starting Development
 
 Start the app in the `dev` environment:
@@ -42,4 +44,4 @@ npm run package
 
 ## License
 
-MIT © [James Hansen](https://github.com/UserJHansen) 
+MIT © [James Hansen](https://github.com/UserJHansen)

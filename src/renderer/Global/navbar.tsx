@@ -166,6 +166,7 @@ export default function Navbar() {
                   className={CSS.navitem}
                   activeClassName={CSS.active}
                   key={object[0] as string}
+                  id={object[0] as string}
                 >
                   <FontAwesomeIcon icon={object[1] as IconDefinition} />
                   {` ${object[0] as string}`}
