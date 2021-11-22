@@ -38,6 +38,17 @@ To package apps for the local platform:
 npm run package
 ```
 
+## Testing
+
+To test the app locally:
+
+```bash
+npm test
+
+# or if you want watch mode
+npm run test:watch
+```
+
 ## Maintainers
 
 - [James Hansen](https://github.com/UserJHansen)

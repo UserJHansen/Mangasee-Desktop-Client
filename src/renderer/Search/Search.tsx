@@ -112,7 +112,9 @@ export default function Search() {
     window.history.pushState(
       {},
       '',
-      `/search?overide=${window.btoa(JSON.stringify(showControl))}`
+      `${window.location.pathname}?overide=${window.btoa(
+        JSON.stringify(showControl)
+      )}`
     );
   }
   // https://github.com/microsoft/TypeScript/issues/23724#issuecomment-384807714

@@ -1,7 +1,7 @@
 import './App.css';
 
-import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react';
+import { HashRouter as ReactRouter, Switch, Route } from 'react-router-dom';
 import useSWR from 'swr';
 
 import { Container } from 'react-bootstrap';
@@ -11,55 +11,42 @@ import Home from './Home/home';
 import Login from './Login/login';
 import ScrollToTop from './Global/ScrollToTop';
 
-const Search = React.lazy(() => import('./Search/search'));
-const Directory = React.lazy(() => import('./Directory/directory'));
-const Discussion = React.lazy(() => import('./Discussion/discussion'));
-const Bookmarks = React.lazy(() => import('./Bookmarks/bookmarks'));
-const Settings = React.lazy(() => import('./Settings/settings'));
-const Subscriptions = React.lazy(() => import('./Subscriptions/subscriptions'));
+const Search = lazy(() => import('./Search/search'));
+const Directory = lazy(() => import('./Directory/directory'));
+const Discussion = lazy(() => import('./Discussion/discussion'));
+const Bookmarks = lazy(() => import('./Bookmarks/bookmarks'));
+const Settings = lazy(() => import('./Settings/settings'));
+const Subscriptions = lazy(() => import('./Subscriptions/subscriptions'));
 
 export default function Router() {
   const { data: isLoggedIn } = useSWR('/api/loggedIn');
 
-  // Use react router without hashrouter
-
+  console.log(isLoggedIn, window.location.href);
   return (
-    <BrowserRouter>
-      <Switch>
-        {isLoggedIn ? (
-          <React.Fragment key="loggedin">
-            <Navbar />
-            <ScrollToTop />
-            <Container>
-              <Route strict path="/Search/:overide" component={Search} />
-              {/* List of Routes available when logged in */}
-              {[
-                ['/', Home],
-                ['/home', Home],
-                ['/Directory', Directory],
-                ['/Search', Search],
-                ['/Discussion', Discussion],
-                ['/Bookmarks', Bookmarks],
-                ['/Settings', Settings],
-                ['/Subscriptions', Subscriptions],
-              ].map((route) => {
-                const path = (route[0] || '') as string;
-                const Render = (route[1] || <></>) as () => React.ReactElement;
-                return (
-                  <Route key={path} path={path} exact component={Render} />
-                );
-              })}
-              <Redirect path="/login" to="/home" />
-            </Container>
-          </React.Fragment>
-        ) : (
-          <React.Fragment key="loggedout">
-            <Route path="">
-              <Login />
-            </Route>
-          </React.Fragment>
-        )}
-      </Switch>
-    </BrowserRouter>
+    <ReactRouter>
+      <Suspense fallback="Loading Route...">
+        <Switch>
+          {isLoggedIn ? (
+            <React.Fragment key="loggedin">
+              <Navbar />
+              <ScrollToTop />
+              <Container>
+                {/* List of Routes available when logged in */}
+                <Route path="/Home" component={Home} />
+                <Route path="/Directory" component={Directory} />
+                <Route path="/Search/:overide" component={Search} />
+                <Route path="/Search" component={Search} />
+                <Route path="/Discussion" component={Discussion} />
+                <Route path="/Bookmarks" component={Bookmarks} />
+                <Route path="/Settings" component={Settings} />
+                <Route path="/Subscriptions" component={Subscriptions} />
+              </Container>
+            </React.Fragment>
+          ) : (
+            <Login key="loggedout" />
+          )}
+        </Switch>
+      </Suspense>
+    </ReactRouter>
   );
 }

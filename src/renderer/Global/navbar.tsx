@@ -73,7 +73,7 @@ export default function Navbar() {
         <Container>
           <Row className="align-items-center" style={{ width: 'inherit' }}>
             <Col lg={8} md={7}>
-              <Link to="/home">
+              <Link to="/Home">
                 <img
                   alt="Mangasee Logo"
                   src="https://mangasee123.com/media/navbar.brand.png"
@@ -81,12 +81,7 @@ export default function Navbar() {
                 />
               </Link>
             </Col>
-            <Col
-              lg={4}
-              md={5}
-              className={CSS.QuickSearch}
-              style={{ position: 'relative' }}
-            >
+            <Col lg={4} md={5} className={CSS.QuickSearch}>
               <InputGroup>
                 <FormControl
                   type="text"

@@ -14,6 +14,7 @@ import path from 'path';
 import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import process from 'process';
 
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -78,6 +79,7 @@ const createWindow = async () => {
       spellcheck: true,
     },
   });
+  mainWindow.webContents.openDevTools();
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
@@ -100,19 +102,13 @@ const createWindow = async () => {
   const filter = {
     urls: ['https://mangasee123.com/*'],
   };
-  session.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
-    callback({
-      requestHeaders: {
-        Origin: 'http://localhost:1212',
-        ...details.requestHeaders,
-      },
-    });
-  });
 
   session.webRequest.onHeadersReceived(filter, (details, callback) => {
     callback({
       responseHeaders: {
-        'Access-Control-Allow-Origin': ['http://localhost:1212'],
+        'Access-Control-Allow-Origin': [
+          `http://localhost:${process.env.PORT || '1212'}`,
+        ],
         'Access-Control-Allow-Headers': ['content-type', '*'],
         'Access-Control-Allow-Credentials': 'true',
         ...details.responseHeaders,
