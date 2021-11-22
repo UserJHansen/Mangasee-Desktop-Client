@@ -28,6 +28,8 @@ export function storeBackupProvider() {
   // We still use the map for write & read for performance.
   return map;
 }
+axios.defaults.baseURL = 'https://mangasee123.com';
+axios.defaults.withCredentials = true;
 
 export default function mangaAPIFetcher(query: string) {
   // Offline Friendly requests
@@ -68,48 +70,28 @@ export default function mangaAPIFetcher(query: string) {
   // Requests that require to be online
   switch (query) {
     case '/api/loggedIn':
-      return axios
-        .get('https://mangasee123.com/user/subscription.get.php', {
-          withCredentials: true,
-        })
-        .then((res) => res.data.success);
+      return axios('/user/subscription.get.php').then(
+        (res) => res.data.success
+      );
     case '/api/allManga':
-      return fetch('https://mangasee123.com/directory/index.php', {
-        credentials: 'include',
-      })
-        .then((response) => response.text())
-        .then((text) =>
-          JSON.parse(<string>FindVariable('vm.FullDirectory', text))
-        );
+      return axios('/directory/index.php').then(({ data: text }) =>
+        JSON.parse(<string>FindVariable('vm.FullDirectory', text))
+      );
     case '/api/Subbed':
-      return axios('https://mangasee123.com/user/subscription.get.php', {
-        withCredentials: true,
-      }).then((res) => res.data.val);
+      return axios('/user/subscription.get.php').then((res) => res.data.val);
     case '/api/FullDirectory':
-      return fetch('https://mangasee123.com/directory/', {
-        credentials: 'include',
-      })
-        .then((response) => response.text())
-        .then((text) =>
-          JSON.parse(<string>FindVariable('vm.FullDirectory', text))
-        );
+      return axios('/directory/').then(({ data: text }) =>
+        JSON.parse(<string>FindVariable('vm.FullDirectory', text))
+      );
     case '/api/SearchableList':
-      return axios
-        .get('https://mangasee123.com/_search.php', {
-          withCredentials: true,
-        })
-        .then((res) => res.data);
+      return axios('/_search.php').then((res) => res.data);
     case '/api/set/home':
       return Promise.all([
-        fetch('https://mangasee123.com/index.php', {
-          credentials: 'include',
-        }).then((response) => response.text()),
-        axios('https://mangasee123.com/user/subscription.get.php', {
-          withCredentials: true,
-        }).then((res) => res.data.val),
+        axios('/index.php'),
+        axios('/user/subscription.get.php'),
       ]).then((resultArray) => {
-        const index = resultArray[0];
-        const subscriptions = resultArray[1];
+        const { data: index } = resultArray[0].data;
+        const { val: subscriptions } = resultArray[1].data;
 
         return {
           Subbed: subscriptions,
@@ -128,9 +110,7 @@ export default function mangaAPIFetcher(query: string) {
         };
       });
     case '/api/set/search':
-      return axios('https://mangasee123.com/search/search.php', {
-        withCredentials: true,
-      }).then((results) => ({
+      return axios('/search/search.php').then((results) => ({
         Directory: results.data,
       }));
     default:
