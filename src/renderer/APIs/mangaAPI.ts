@@ -90,7 +90,7 @@ export default function mangaAPIFetcher(query: string) {
         axios('/index.php'),
         axios('/user/subscription.get.php'),
       ]).then((resultArray) => {
-        const { data: index } = resultArray[0].data;
+        const { data: index } = resultArray[0];
         const { val: subscriptions } = resultArray[1].data;
 
         return {

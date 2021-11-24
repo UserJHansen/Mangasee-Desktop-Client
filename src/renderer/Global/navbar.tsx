@@ -157,7 +157,7 @@ export default function Navbar() {
             ].map((object) => {
               return (
                 <NavLink
-                  to={`/${object[0] as string}`}
+                  to={`/${object[0] as string}/`}
                   className={CSS.navitem}
                   activeClassName={CSS.active}
                   key={object[0] as string}

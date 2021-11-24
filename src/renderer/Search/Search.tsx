@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import Fuse from 'fuse.js';
 import useSWR from 'swr';
 import update from 'immutability-helper';
@@ -79,6 +80,7 @@ export default function Search() {
   const overides: FilterControlsPartial = JSON.parse(
     window.atob(overide || 'e30=')
   );
+
   const defaultState: FilterControls = {
     'Sort By': { open: true, selection: 'Score' },
     'Official Translation': { open: false, selection: 'Any' },
@@ -102,21 +104,25 @@ export default function Search() {
   const [rendered, setRendered] = useState<Fuse.FuseResult<MangaSearchList>[]>(
     []
   );
-  const [showControl, setShowControl] = useState<FilterControls>({
-    ...defaultState,
-    ...overides,
-  });
+  const [showControl, setShowControl] = useState<FilterControls>(
+    !isEqual(overides, {})
+      ? {
+          ...defaultState,
+          ...overides,
+        }
+      : defaultState
+  );
 
-  // console.log(window.location.href);
-  if (showControl !== overides) {
-    window.history.pushState(
-      {},
-      '',
-      `${window.location.pathname}?overide=${window.btoa(
-        JSON.stringify(showControl)
-      )}`
-    );
+  const history = useHistory();
+  function setShowControlHandler(newValue: FilterControls) {
+    if (!isEqual(newValue, overides) && !isEqual(newValue, defaultState)) {
+      history.push({
+        pathname: `/SearchDirect/${window.btoa(JSON.stringify(newValue))}`,
+      });
+      setShowControl(newValue);
+    }
   }
+
   // https://github.com/microsoft/TypeScript/issues/23724#issuecomment-384807714
   function isKey<E>(str: string): str is Extract<keyof E, string> {
     return typeof str === 'string';
@@ -257,7 +263,7 @@ export default function Search() {
   }
 
   function updateResult(name: keyof FilterControls, value: string) {
-    setShowControl(
+    setShowControlHandler(
       update(showControl, {
         [name]: { selection: { $set: value } },
       })
@@ -324,7 +330,9 @@ export default function Search() {
             className="float-right"
             size="sm"
             variant="outline-danger"
-            onClick={() => setShowControl(defaultState)}
+            onClick={() => {
+              setShowControlHandler(defaultState);
+            }}
           >
             <FontAwesomeIcon icon={faUndoAlt} />
             {' Reset'}
@@ -371,7 +379,14 @@ export default function Search() {
                       {decode(manga.s)}
                     </Link>
                     {manga.h && (
-                      <FontAwesomeIcon title="Popular Manga" icon={faFireAlt} />
+                      <>
+                        {' '}
+                        <FontAwesomeIcon
+                          style={{ color: 'red' }}
+                          title="Popular Manga"
+                          icon={faFireAlt}
+                        />
+                      </>
                     )}
                     {isFull && (
                       <div>
@@ -513,7 +528,7 @@ export default function Search() {
                                   showControl.Genre.selection as SelectType
                                 ).selectednot.includes(genre)
                               )
-                                setShowControl(
+                                setShowControlHandler(
                                   update(showControl, {
                                     Genre: {
                                       selection: {
@@ -527,7 +542,7 @@ export default function Search() {
                                   showControl.Genre.selection as SelectType
                                 ).selected.includes(genre)
                               )
-                                setShowControl(
+                                setShowControlHandler(
                                   update(showControl, {
                                     Genre: {
                                       selection: {
@@ -551,7 +566,7 @@ export default function Search() {
                                   showControl.Genre.selection as SelectType
                                 ).selectednot.includes(genre)
                               )
-                                setShowControl(
+                                setShowControlHandler(
                                   update(showControl, {
                                     Genre: {
                                       selection: {
@@ -694,7 +709,7 @@ export default function Search() {
                   <ListGroup.Item
                     className={`${CSS.HeaderItem} ${CSS['list-group-item']}`}
                     onClick={() => {
-                      setShowControl(
+                      setShowControlHandler(
                         update(showControl, {
                           [key]: { $toggle: ['open'] },
                         })
@@ -717,13 +732,13 @@ export default function Search() {
                         onClick={() => {
                           setfirstLoad(true);
                           if (typeof showControl[key].selection === 'string')
-                            setShowControl(
+                            setShowControlHandler(
                               update(showControl, {
                                 [key]: { selection: { $set: sort } },
                               })
                             );
                           else if (sort === 'Any')
-                            setShowControl(
+                            setShowControlHandler(
                               update(showControl, {
                                 [key]: {
                                   selection: {
@@ -761,7 +776,7 @@ export default function Search() {
                               showControl[key].selection as SelectType
                             ).selectednot.includes(sort)
                           )
-                            setShowControl(
+                            setShowControlHandler(
                               update(showControl, {
                                 [key]: {
                                   selection: { selected: { $push: [sort] } },
@@ -773,7 +788,7 @@ export default function Search() {
                               showControl[key].selection as SelectType
                             ).selected.includes(sort)
                           )
-                            setShowControl(
+                            setShowControlHandler(
                               update(showControl, {
                                 [key]: {
                                   selection: {
@@ -800,7 +815,7 @@ export default function Search() {
                               showControl[key].selection as SelectType
                             ).selectednot.includes(sort)
                           )
-                            setShowControl(
+                            setShowControlHandler(
                               update(showControl, {
                                 [key]: {
                                   selection: {

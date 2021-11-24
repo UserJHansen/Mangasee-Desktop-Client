@@ -1,7 +1,12 @@
 import './App.css';
 
 import React, { lazy, Suspense } from 'react';
-import { HashRouter as ReactRouter, Switch, Route } from 'react-router-dom';
+import {
+  HashRouter as ReactRouter,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import useSWR from 'swr';
 
 import { Container } from 'react-bootstrap';
@@ -21,7 +26,6 @@ const Subscriptions = lazy(() => import('./Subscriptions/subscriptions'));
 export default function Router() {
   const { data: isLoggedIn } = useSWR('/api/loggedIn');
 
-  console.log(isLoggedIn, window.location.href);
   return (
     <ReactRouter>
       <Suspense fallback="Loading Route...">
@@ -34,12 +38,23 @@ export default function Router() {
                 {/* List of Routes available when logged in */}
                 <Route path="/Home" component={Home} />
                 <Route path="/Directory" component={Directory} />
-                <Route path="/Search/:overide" component={Search} />
-                <Route path="/Search" component={Search} />
+                <Route path="/SearchDirect/:overide" component={Search} />
+                <Route
+                  path="/Search"
+                  component={() => (
+                    <Redirect from="*" to="/SearchDirect/e30=" />
+                  )}
+                />
                 <Route path="/Discussion" component={Discussion} />
                 <Route path="/Bookmarks" component={Bookmarks} />
                 <Route path="/Settings" component={Settings} />
                 <Route path="/Subscriptions" component={Subscriptions} />
+                <Route
+                  path="/"
+                  strict
+                  exact
+                  component={() => <Redirect from="*" to="/Home" />}
+                />
               </Container>
             </React.Fragment>
           ) : (
