@@ -24,8 +24,6 @@ jobs:
           npm install
 
       - name: npm test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm run package
           npm run lint

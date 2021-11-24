@@ -6,8 +6,8 @@ import {
   MemoryRouter,
   // Router
 } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { SWRConfig } from 'swr';
+// import { createMemoryHistory } from 'history';
+// import { SWRConfig } from 'swr';
 
 import StorageType from '../renderer/Interfaces/StorageType';
 
