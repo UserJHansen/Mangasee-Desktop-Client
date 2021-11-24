@@ -14,15 +14,15 @@ import StorageType from '../renderer/Interfaces/StorageType';
 import App from '../renderer/App';
 import Navbar from '../renderer/Global/navbar';
 import ScrollToTop from '../renderer/Global/ScrollToTop';
-import Home from '../renderer/Home/home';
-import Directory from '../renderer/Directory/directory';
-import Search from '../renderer/Search/search';
-import Discussion from '../renderer/Discussion/discussion';
-import Bookmarks from '../renderer/Bookmarks/bookmarks';
-import Settings from '../renderer/Settings/settings';
-import Subscriptions from '../renderer/Subscriptions/subscriptions';
-import Login from '../renderer/Login/login';
-import mangaAPIFetcher from '../renderer/APIs/mangaAPI';
+// import Home from '../renderer/Home/home';
+// import Directory from '../renderer/Directory/directory';
+// import Search from '../renderer/Search/search';
+// import Discussion from '../renderer/Discussion/discussion';
+// import Bookmarks from '../renderer/Bookmarks/bookmarks';
+// import Settings from '../renderer/Settings/settings';
+// import Subscriptions from '../renderer/Subscriptions/subscriptions';
+// import Login from '../renderer/Login/login';
+// import mangaAPIFetcher from '../renderer/APIs/mangaAPI';
 
 type GlobalType = {
   ElectronStore: () => StorageType;
