@@ -16,12 +16,12 @@ import Home from './Home/home';
 import Login from './Login/login';
 import ScrollToTop from './Global/ScrollToTop';
 
-const Search = lazy(() => import('./Search/search'));
-const Directory = lazy(() => import('./Directory/directory'));
-const Discussion = lazy(() => import('./Discussion/discussion'));
-const Bookmarks = lazy(() => import('./Bookmarks/bookmarks'));
-const Settings = lazy(() => import('./Settings/settings'));
-const Subscriptions = lazy(() => import('./Subscriptions/subscriptions'));
+const Search = lazy(() => import('./Search/Search'));
+const Directory = lazy(() => import('./Directory/Directory'));
+const Discussion = lazy(() => import('./Discussion/Discussion'));
+const Bookmarks = lazy(() => import('./Bookmarks/Bookmarks'));
+const Settings = lazy(() => import('./Settings/Settings'));
+const Subscriptions = lazy(() => import('./Subscriptions/Subscriptions'));
 
 export default function Router() {
   const { data: isLoggedIn } = useSWR('/api/loggedIn');

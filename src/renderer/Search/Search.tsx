@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import Fuse from 'fuse.js';
 import useSWR from 'swr';
 import update from 'immutability-helper';
-import isEqual from 'lodash.isEqual';
+import { isEqual } from 'lodash';
 
 import {
   faAlignLeft,
