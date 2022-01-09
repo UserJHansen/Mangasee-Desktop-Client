@@ -1,5 +1,6 @@
 import axios from 'axios';
-import MangaResult from 'renderer/Interfaces/MangaResult';
+import ReCAPTCHA from '../Global/reCaptcha';
+import MangaResult from '../Interfaces/MangaResult';
 
 import { FindVariable } from '../Global/getJsVar';
 
@@ -34,21 +35,21 @@ axios.defaults.withCredentials = true;
 export default function mangaAPIFetcher(query: string) {
   // Offline Friendly requests
   switch (query) {
-    case query.match(/\/add\/(.*)\/(.*)/g)?.input: {
-      const value = /\/add\/(.*)\/(.*)/g.exec(query)?.[2];
-      switch (/\/add\/(.*)\/(.*)/g.exec(query)?.[1]) {
+    case query.match(/\/add\/(.*)\/(.*)/)?.input: {
+      const value = /\/add\/(.*)\/(.*)/.exec(query)?.[2];
+      switch (/\/add\/(.*)\/(.*)/.exec(query)?.[1]) {
         case 'History':
           window
             .ElectronStore()
             .history.push(JSON.parse(value || '{}') as MangaResult);
           return undefined;
-        default:
-          return undefined;
+        // no default
       }
+      break;
     }
-    case query.match(/\/set\/(.*)\/(.*)/g)?.input: {
-      const value = /\/set\/(.*)\/(.*)/g.exec(query)?.[2];
-      switch (/\/set\/(.*)\/(.*)/g.exec(query)?.[1]) {
+    case query.match(/\/set\/(.*)\/(.*)/)?.input: {
+      const value = /\/set\/(.*)\/(.*)/.exec(query)?.[2];
+      switch (/\/set\/(.*)\/(.*)/.exec(query)?.[1]) {
         case 'FullPage': {
           window.ElectronStore().fullPage = value === 'true';
           return undefined;
@@ -113,6 +114,106 @@ export default function mangaAPIFetcher(query: string) {
       return axios('/search/search.php').then((results) => ({
         Directory: results.data,
       }));
+    case '/api/set/Discussion':
+      return axios('/discussion/index.get.php').then((results) => ({
+        Discussions: results.data.val,
+      }));
+    case query.match(/\/api\/Post\/(.*)/)?.input:
+      return axios
+        .post('/discussion/post.get.php', {
+          id: /\/api\/Post\/(.*)/.exec(query)?.[1],
+        })
+        .then((results) =>
+          results.data.success ? results.data.val : 'No Post'
+        );
+    case query.match(/\/add\/(.*)\/(.*)\/(.*)/)?.input: {
+      const args = /\/add\/((?:(?:.*)){3,})/.exec(query)?.[1].split('/');
+      if (typeof args === 'undefined' || args.length < 3) return undefined;
+      const selector = args[0];
+      switch (selector) {
+        case 'Reply': {
+          const postID = args[1];
+          const post = window.decodeURIComponent(args[2]);
+
+          const recaptcha = new ReCAPTCHA(
+            '6Ld2-aMZAAAAAD9ESUQP8ijtHxtoWAwv2DOsJJ0n',
+            'homepage'
+          );
+
+          return recaptcha.getToken().then((token) =>
+            axios.post('/discussion/post.comment.php', {
+              Captcha: token,
+              PostID: postID,
+              CommentContent: post,
+            })
+          );
+        }
+        case 'ReplyComment': {
+          const postID = args[1];
+          const post = window.decodeURIComponent(args[2]);
+
+          const recaptcha = new ReCAPTCHA(
+            '6Ld2-aMZAAAAAD9ESUQP8ijtHxtoWAwv2DOsJJ0n',
+            'homepage'
+          );
+
+          return recaptcha.getToken().then((token) =>
+            axios.post('/discussion/post.comment.reply.php', {
+              Captcha: token,
+              TargetID: postID,
+              ReplyMessage: post,
+            })
+          );
+        }
+        default:
+          return undefined;
+      }
+    }
+    case query.match(/\/like\/(.*)\/(.*)\/(.*)/)?.input: {
+      const args = /\/like\/((?:(?:.*)){3,})/.exec(query)?.[1].split('/');
+      if (typeof args === 'undefined' || args.length < 2) return undefined;
+      const selector = args[0];
+      switch (selector) {
+        case 'Comment':
+          return axios.post('/discussion/post.comment.like.php', {
+            CommentID: args[1],
+            Liked: args[2] === 'true',
+          });
+
+        // no default
+      }
+      return undefined;
+    }
+    case query.match(/\/delete\/(.*)\/(.*)/)?.input: {
+      const args = /\/delete\/((?:(?:.*)){2,})/.exec(query)?.[1].split('/');
+      if (typeof args === 'undefined' || args.length < 2) return undefined;
+      const selector = args[0];
+      switch (selector) {
+        case 'Post':
+          return axios
+            .post('/discussion/post.delete.php', {
+              id: args[1],
+            })
+            .then((results) => results.data.val);
+        case 'PostComment':
+          if (args.length < 3) return undefined;
+          return axios
+            .post('/discussion/post.comment.delete.php', {
+              id: args[1],
+              CommentID: args[2],
+            })
+            .then((results) => results.data.val);
+        case 'CommentReply':
+          return axios
+            .post('/discussion/post.comment.delete.php', {
+              TargetID: args[1],
+              CommentID: args[2],
+            })
+            .then((results) => results.data.val);
+        // no default
+      }
+      return undefined;
+    }
     default:
       return undefined;
   }

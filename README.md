@@ -1,4 +1,4 @@
-<img src=".erb/img/erb-banner.png" width="100%" />
+<img src=".erb/img/erb-banner.svg" width="100%" />
 
 <br>
 
@@ -10,15 +10,15 @@
 
 ## Install
 
-- **If you have installation or compilation issues with this project, please see [the electron react boilerplate debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
-
-First, clone the repo via git and install dependencies:
+Clone the repo and install dependencies:
 
 ```bash
 git clone --depth 1 --single-branch https://github.com/UserJHansen/Mangasee-Desktop-Client.git
 cd Mangasee-Desktop-Client
 npm install
 ```
+
+**Having issues installing? See our [debugging guide](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)**
 
 Then create your own email and password for testing or just ignore the errors, you can put these into a logininfo.json file in the root directory.
 

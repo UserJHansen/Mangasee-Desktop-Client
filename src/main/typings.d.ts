@@ -11,5 +11,7 @@ declare global {
       value: StorageType[keyof StorageType]
     ) => void;
     openMangasee: () => void;
+    openContact: () => void;
+    openPrivacy: () => void;
   }
 }

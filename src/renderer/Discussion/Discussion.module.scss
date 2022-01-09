@@ -1,0 +1,73 @@
+.Post {
+  border: 1px solid #ced4da;
+  padding: 10px;
+}
+
+.Post.PostAnnouncement {
+  background-color: #f8d7da;
+  border: 1px solid #974f56;
+}
+
+.Post.PostAnnouncement a {
+  color: #974f56;
+}
+  
+.Post.PostAnnouncement a:hover {
+  color: red;
+}
+
+.PostTitle {
+  font-size: 18px;
+}
+
+.PostTitle a {
+  display: block;
+  color: gray;
+}
+
+.PostTitle a:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.PostDesc {
+  font-size: 14px;
+  color: gray;
+}
+
+.Post.PostAnnouncement .PostDesc {
+  color: #5c5c5c;
+}
+
+.PostType {
+  padding: 2px 5px;
+  color: #000;
+  border-radius: 3px;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.PostType.General {
+  background: #b0dfff;
+}
+
+.PostType.Request {
+  background: #d1ffe9;
+}
+
+.PostType.Question {
+  background: #d1cfff;
+}
+
+.PostType.Announcement {
+  background: #974f56;
+  color: #fff;
+}
+
+.Comments {
+  font-weight: 600;
+}
+
+.PostDesc .Author {
+  font-weight: 600;
+}

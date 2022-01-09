@@ -1,0 +1,97 @@
+h1 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.Description {
+  color: gray;
+}
+
+.Description span {
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.CommentArea h2 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.CommentArea {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background: #f9f9f9;
+}
+
+.CommentForm {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background: #fff;
+}
+
+.CommentForm textarea {
+  background: #f7fffd;
+}
+
+.Content {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.Comment {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background: #fff;
+}
+
+.CommentTop,
+.CommentTop a {
+  font-size: 14px;
+  color: gray;
+}
+
+.CommentTop strong {
+  font-weight: 600;
+}
+
+.DeleteComment {
+  color: #ccc !important;
+}
+
+.DeleteComment:hover {
+  color: gray !important;
+}
+
+.Reply {
+  border-top: 1px solid #eee;
+  padding-left: 20px;
+}
+
+.ReplyNav {
+  color: gray;
+  font-size: 14px;
+}
+
+.ReplyNav a,
+.ReplyNav span {
+  color: gray;
+  margin-right: 5px;
+}
+
+.ReplyMessage {
+  padding-left: 20px;
+}
+
+.ViewMoreReplies {
+  background: #f2f2f2;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  color: gray;
+  cursor: pointer;
+}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import Fuse from 'fuse.js';
 import useSWR from 'swr';
 import update from 'immutability-helper';
@@ -35,6 +35,7 @@ import { decode } from 'he';
 import CSS from './Search.module.scss';
 import Box from '../Global/Box';
 import { ChapterDisplay, chapterURLEncode } from '../Global/DisplayTools';
+import AdjustedDate from '../Global/AdjustedDate';
 
 type SelectType = {
   selected: string[];
@@ -113,12 +114,10 @@ export default function Search() {
       : defaultState
   );
 
-  const history = useHistory();
+  const navigate = useNavigate();
   function setShowControlHandler(newValue: FilterControls) {
     if (!isEqual(newValue, overides) && !isEqual(newValue, defaultState)) {
-      history.push({
-        pathname: `/SearchDirect/${window.btoa(JSON.stringify(newValue))}`,
-      });
+      navigate(`/Search/${window.btoa(JSON.stringify(newValue))}`);
       setShowControl(newValue);
     }
   }
@@ -495,14 +494,7 @@ export default function Search() {
                           {manga.lt > 0 && (
                             <span className={CSS.GrayLabel}>
                               &middot;
-                              {new Date(manga.ls).toLocaleDateString(
-                                undefined,
-                                {
-                                  day: 'numeric',
-                                  month: 'numeric',
-                                  year: 'numeric',
-                                }
-                              )}
+                              {new AdjustedDate(manga.ls).toLocaleDateString()}
                             </span>
                           )}
                         </div>

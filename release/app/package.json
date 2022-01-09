@@ -1,6 +1,5 @@
 {
   "name": "mangasee-desktop-client",
-  "productName": "MangaseeDesktop",
   "version": "0.0.1",
   "description": "A Desktop client for Mangasee that uses the Electron React boilerplate for rapid application development",
   "main": "./dist/main/main.js",

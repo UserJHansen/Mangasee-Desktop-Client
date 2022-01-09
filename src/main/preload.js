@@ -8,6 +8,7 @@ function StorageHandler() {
         type: 'string',
         format: 'email',
       },
+      userId: { type: 'number' },
       fullPage: {
         type: 'boolean',
         default: false,
@@ -32,4 +33,10 @@ contextBridge.exposeInMainWorld('setStoreValue', (key, value) =>
 );
 contextBridge.exposeInMainWorld('openMangasee', () =>
   shell.openExternal('https://mangasee123.com/')
+);
+contextBridge.exposeInMainWorld('openContact', () =>
+  shell.openExternal('https://mangasee123.com/contact/')
+);
+contextBridge.exposeInMainWorld('openPrivacy', () =>
+  shell.openExternal('https://mangasee123.com/privacy/')
 );

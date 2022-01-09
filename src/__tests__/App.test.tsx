@@ -54,6 +54,8 @@ function StorageHandler() {
         type: 'array',
         default: [],
       },
+      UserId: { type: 'string', default: '' },
+      Username: { type: 'string', default: '' },
     },
   });
 }

@@ -1,4 +1,9 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx lint-staged
+npm install
+npm run package
+npm run lint
+npm exec tsc
+npm test --loglevel=silent
+

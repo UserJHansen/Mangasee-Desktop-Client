@@ -11,6 +11,10 @@ body {
   color: white;
 }
 
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
+
 .box {
   padding: 50px;
   border-radius: 50px;

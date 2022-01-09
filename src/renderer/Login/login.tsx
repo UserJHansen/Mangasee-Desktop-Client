@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Alert } from 'react-bootstrap';
+import { Alert, FormControl, FormLabel } from 'react-bootstrap';
 import { useSWRConfig } from 'swr';
 
 import Authentication from '../APIs/Authentication';
@@ -76,45 +76,43 @@ export default function Home() {
             }}
           />
           <div className="mb-3">
-            <label
+            <FormLabel
               htmlFor="EmailInput"
-              className="form-label"
               style={{
                 width: '100%',
               }}
             >
               Email address:
-              <input
+              <FormControl
                 type="email"
-                className="form-control"
                 id="EmailInput"
                 placeholder="name@example.com"
+                // eslint-disable-next-line react/jsx-no-bind
                 onChange={handleEmailChange}
                 value={email}
                 required
               />
-            </label>
+            </FormLabel>
           </div>
           <div className="mb-3">
-            <label
+            <FormLabel
               htmlFor="PasswordInput"
-              className="form-label"
               style={{
                 width: '100%',
               }}
             >
               Password:
-              <input
+              <FormControl
                 type="password"
-                className="form-control"
                 id="PasswordInput"
                 placeholder="********"
                 minLength={5}
+                // eslint-disable-next-line react/jsx-no-bind
                 onChange={handlePasswordChange}
                 value={password}
                 required
               />
-            </label>
+            </FormLabel>
           </div>
           <button
             id="signupButton"

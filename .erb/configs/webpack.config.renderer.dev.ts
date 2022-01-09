@@ -20,9 +20,9 @@ if (process.env.NODE_ENV === 'production') {
 
 const port = process.env.PORT || 1212;
 const manifest = path.resolve(webpackPaths.dllPath, 'renderer.json');
-const requiredByDLLConfig: boolean = (
-  module.parent || { filename: '' }
-).filename.includes('webpack.config.renderer.dev.dll');
+const requiredByDLLConfig = module.parent!.filename.includes(
+  'webpack.config.renderer.dev.dll'
+);
 
 /**
  * Warn if the DLL is not built
@@ -39,7 +39,7 @@ if (
   execSync('npm run postinstall');
 }
 
-export default merge(baseConfig as any, {
+const configuration: webpack.Configuration = {
   devtool: 'inline-source-map',
 
   mode: 'development',
@@ -86,37 +86,28 @@ export default merge(baseConfig as any, {
         use: ['style-loader', 'css-loader', 'sass-loader'],
         exclude: /\.module\.s?(c|a)ss$/,
       },
-      //Font Loader
+      // Fonts
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },
-      // SVG Font
+      // Images
       {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            mimetype: 'image/svg+xml',
-          },
-        },
-      },
-      // Common Image Formats
-      {
-        test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        use: 'url-loader',
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
       },
     ],
   },
   plugins: [
-    requiredByDLLConfig
-      ? null
-      : new webpack.DllReferencePlugin({
-          context: webpackPaths.dllPath,
-          manifest: require(manifest),
-          sourceType: 'var',
-        }),
+    ...(requiredByDLLConfig
+      ? []
+      : [
+          new webpack.DllReferencePlugin({
+            context: webpackPaths.dllPath,
+            manifest: require(manifest),
+            sourceType: 'var',
+          }),
+        ]),
 
     new webpack.NoEmitOnErrorsPlugin(),
 
@@ -162,7 +153,9 @@ export default merge(baseConfig as any, {
     __filename: false,
   },
 
+  // @ts-ignore
   devServer: {
+    host: 'localhost',
     port,
     compress: true,
     hot: true,
@@ -172,7 +165,6 @@ export default merge(baseConfig as any, {
     },
     historyApiFallback: {
       verbose: true,
-      disableDotRule: false,
     },
     onBeforeSetupMiddleware() {
       console.log('Starting Main Process...');
@@ -181,8 +173,10 @@ export default merge(baseConfig as any, {
         env: process.env,
         stdio: 'inherit',
       })
-        .on('close', (code) => process.exit(code || 1))
+        .on('close', (code: number) => process.exit(code || 1))
         .on('error', (spawnError) => console.error(spawnError));
     },
   },
-});
+};
+
+export default merge(baseConfig, configuration);

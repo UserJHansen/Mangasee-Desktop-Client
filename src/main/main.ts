@@ -8,10 +8,9 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, protocol, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import process from 'process';
@@ -81,7 +80,58 @@ const createWindow = async () => {
   });
   mainWindow.webContents.openDevTools();
 
-  mainWindow.loadURL(resolveHtmlPath('index.html'));
+  const { session } = mainWindow.webContents;
+
+  session.protocol.registerHttpProtocol(
+    'fake-extension',
+    (request, callback) => {
+      callback({
+        url: request.url.replace(
+          'fake-extension://mangasee123.com/',
+          resolveHtmlPath('')
+        ),
+      });
+    }
+  );
+
+  const filter = {
+    urls: ['https://mangasee123.com/*'],
+  };
+  session.webRequest.onHeadersReceived(filter, (details, callback) => {
+    callback({
+      responseHeaders: {
+        'Access-Control-Allow-Origin': [`fake-extension://mangasee123.com`],
+        'Access-Control-Allow-Headers': ['content-type', '*'],
+        'Access-Control-Allow-Credentials': 'true',
+        ...details.responseHeaders,
+        'set-cookie':
+          details.responseHeaders?.['set-cookie']?.map((cookie: string) => {
+            return `${cookie}; Secure; SameSite=None`;
+          }) || [],
+      },
+    });
+  });
+
+  // const googleFilter = {
+  //   urls: ['https://*.google.com/*anchor*'],
+  // };
+  // session.webRequest.onBeforeRequest(googleFilter, (details, callback) => {
+  //   callback(
+  //     details.url.replace(
+  //       /&co=[^&]*&/,
+  //       '&co=aHR0cHM6Ly9tYW5nYXNlZTEyMy5jb206NDQz&'
+  //     ) !== details.url
+  //       ? {
+  //           redirectURL: details.url.replace(
+  //             /&co=[^&]*&/,
+  //             '&co=aHR0cHM6Ly9tYW5nYXNlZTEyMy5jb206NDQz&'
+  //           ),
+  //         }
+  //       : {}
+  //   );
+  // });
+
+  mainWindow.loadURL('fake-extension://mangasee123.com/index.html');
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -96,28 +146,6 @@ const createWindow = async () => {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
-  });
-
-  const { session } = mainWindow.webContents;
-  const filter = {
-    urls: ['https://mangasee123.com/*'],
-  };
-
-  session.webRequest.onHeadersReceived(filter, (details, callback) => {
-    callback({
-      responseHeaders: {
-        'Access-Control-Allow-Origin': [
-          `http://localhost:${process.env.PORT || '1212'}`,
-        ],
-        'Access-Control-Allow-Headers': ['content-type', '*'],
-        'Access-Control-Allow-Credentials': 'true',
-        ...details.responseHeaders,
-        'set-cookie':
-          details.responseHeaders?.['set-cookie']?.map((cookie: string) => {
-            return `${cookie}; Secure; SameSite=None`;
-          }) || [],
-      },
-    });
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
@@ -145,6 +173,21 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'fake-extension',
+    privileges: {
+      standard: true,
+      secure: true,
+      bypassCSP: true,
+      allowServiceWorkers: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      stream: true,
+    },
+  },
+]);
 
 app
   .whenReady()

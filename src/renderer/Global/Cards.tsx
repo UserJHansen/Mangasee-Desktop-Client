@@ -14,6 +14,7 @@ import CSS from './card.module.scss';
 
 import { chapterURLEncode, ChapterDisplay } from './DisplayTools';
 import MangaResult from '../Interfaces/MangaResult';
+import AdjustedDate from './AdjustedDate';
 
 interface ThinCardProps {
   children: Array<string | number> | string;
@@ -114,7 +115,8 @@ export function WideCard({ manga, subArr, hotArr }: WideCardProps) {
               {ChapterDisplay(manga.Chapter)}
             </div>
             <div className={CSS.smallertext}>
-              <FontAwesomeIcon icon={faClock} /> <TimeAgo date={manga.Date} />
+              <FontAwesomeIcon icon={faClock} />{' '}
+              <TimeAgo date={new AdjustedDate(manga.Date)} />
             </div>
           </Link>
         </Col>

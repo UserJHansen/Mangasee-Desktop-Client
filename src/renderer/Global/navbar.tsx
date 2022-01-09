@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NavLink, Link, useHistory } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import useSWR, { useSWRConfig } from 'swr';
 import { decode } from 'he';
 import Fuse from 'fuse.js';
@@ -35,7 +35,7 @@ import CSS from './navbarflex.module.scss';
 
 export default function Navbar() {
   const { data: SearchableList } = useSWR('/api/SearchableList');
-  const history = useHistory();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = React.useState('');
 
   const { mutate } = useSWRConfig();
@@ -52,13 +52,16 @@ export default function Navbar() {
     [SearchableList]
   );
 
-  const results: Fuse.FuseResult<MangaReturn>[] = fuse.search(searchTerm);
+  const results: Fuse.FuseResult<MangaReturn>[] = React.useMemo(
+    () => fuse.search(searchTerm),
+    [searchTerm, fuse]
+  );
 
   function quickSearchSubmit() {
     if (results.length === 1) {
-      history.push(`/manga/${results[0].item.i}`);
+      navigate(`/manga/${results[0].item.i}`);
     } else {
-      history.push(`/search/?name=${searchTerm}`);
+      navigate(`/search/?name=${searchTerm}`);
     }
     setSearchTerm('');
   }
@@ -149,22 +152,25 @@ export default function Navbar() {
             className="justify-content-end"
           />
           <BSNavbar.Collapse id="bottom-nav">
-            {[
-              ['Home', faHome],
-              ['Directory', faFolder],
-              ['Search', faSearch],
-              ['Discussion', faComments],
-            ].map((object) => {
+            {(
+              [
+                ['Home', faHome],
+                ['Directory', faFolder],
+                ['Search', faSearch],
+                ['Discussion', faComments],
+              ] as [string, IconDefinition][]
+            ).map((object) => {
               return (
                 <NavLink
-                  to={`/${object[0] as string}/`}
-                  className={CSS.navitem}
-                  activeClassName={CSS.active}
-                  key={object[0] as string}
-                  id={object[0] as string}
+                  to={`/${object[0]}`}
+                  className={({ isActive }) =>
+                    `${CSS.navitem} ${isActive ? CSS.active : ''}`
+                  }
+                  key={object[0]}
+                  id={object[0]}
                 >
-                  <FontAwesomeIcon icon={object[1] as IconDefinition} />
-                  {` ${object[0] as string}`}
+                  <FontAwesomeIcon icon={object[1]} />
+                  {` ${object[0]}`}
                 </NavLink>
               );
             })}
@@ -179,9 +185,10 @@ export default function Navbar() {
                 return (
                   <NavLink
                     to={`/${object[0] as string}`}
-                    activeClassName={CSS.active}
                     key={object[0] as string}
-                    className="dropdown-item"
+                    className={({ isActive }) =>
+                      `dropdown-item ${isActive ? CSS.active : ''}`
+                    }
                   >
                     <FontAwesomeIcon icon={object[1] as IconDefinition} />
                     {` ${object[0] as string}`}
