@@ -118,6 +118,21 @@ export default function mangaAPIFetcher(query: string) {
       return axios('/discussion/index.get.php').then((results) => ({
         Discussions: results.data.val,
       }));
+    case '/api/set/Subscriptions':
+      return Promise.all([
+        axios('/user/subscription.php'),
+        axios('/user/subscription.get.php'),
+      ]).then((resultArray) => {
+        const { data: index } = resultArray[0];
+        const { val: subscriptions } = resultArray[1].data;
+
+        return {
+          Subbed: subscriptions,
+          LastChapterArr: JSON.parse(
+            <string>FindVariable('vm.LastChapterRead', index)
+          ),
+        };
+      });
     case query.match(/\/api\/Post\/(.*)/)?.input:
       return axios
         .post('/discussion/post.get.php', {
@@ -126,6 +141,21 @@ export default function mangaAPIFetcher(query: string) {
         .then((results) =>
           results.data.success ? results.data.val : 'No Post'
         );
+    case query.match(/\/update\/(.*)\/(.*)\/(.*)/)?.input: {
+      const args = /\/update\/((?:(?:.*)){3,})/.exec(query)?.[1].split('/');
+      if (typeof args === 'undefined' || args.length < 3) return undefined;
+      const selector = args[0];
+      switch (selector) {
+        case 'ReadStatus':
+          return axios.post('/user/subscription.update.php', {
+            IndexName: args[1],
+            ReadStatus: args[2],
+            EmailNotify: '1',
+          });
+        default:
+          return undefined;
+      }
+    }
     case query.match(/\/add\/(.*)\/(.*)\/(.*)/)?.input: {
       const args = /\/add\/((?:(?:.*)){3,})/.exec(query)?.[1].split('/');
       if (typeof args === 'undefined' || args.length < 3) return undefined;
@@ -184,9 +214,13 @@ export default function mangaAPIFetcher(query: string) {
       }
       return undefined;
     }
-    case query.match(/\/delete\/(.*)\/(.*)/)?.input: {
-      const args = /\/delete\/((?:(?:.*)){2,})/.exec(query)?.[1].split('/');
-      if (typeof args === 'undefined' || args.length < 2) return undefined;
+    case query.match(/\/delete\/(.*)/)?.input: {
+      const args = /\/delete\/((?:(?:.*)){1,})/.exec(query)?.[1].split('/');
+      if (
+        typeof args === 'undefined' ||
+        (args.length < 2 && args[0] !== 'Subscriptions')
+      )
+        return undefined;
       const selector = args[0];
       switch (selector) {
         case 'Post':
@@ -209,6 +243,16 @@ export default function mangaAPIFetcher(query: string) {
               TargetID: args[1],
               CommentID: args[2],
             })
+            .then((results) => results.data.val);
+        case 'Subscription':
+          return axios
+            .post('/user/subscription.unsub.php', {
+              IndexName: args[1],
+            })
+            .then((results) => results.data.val);
+        case 'Subscriptions':
+          return axios
+            .post('/user/subscription.purge.php')
             .then((results) => results.data.val);
         // no default
       }

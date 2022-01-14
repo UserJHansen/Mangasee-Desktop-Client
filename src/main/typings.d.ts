@@ -1,5 +1,5 @@
 import ElectronStore from 'electron-store';
-import StorageType from 'renderer/Interfaces/StorageType';
+import StorageType from '../renderer/Interfaces/StorageType';
 
 type StorageHandler = ElectronStore<StorageType>;
 

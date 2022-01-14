@@ -39,7 +39,7 @@ export default function Box({
         {` ${title}`}
         {rightIcon && LinkElement ? (
           <LinkElement
-            className={CSS.link}
+            className={`${CSS.link} ${linkProps.className}`}
             {...{ to: linkProps.to, onClick: linkProps.onClick }}
           >
             {`${rightText || ''} `}

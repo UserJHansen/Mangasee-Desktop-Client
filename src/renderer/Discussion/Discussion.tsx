@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import DiscussionResult from 'renderer/Interfaces/DiscussionResult';
 import useSWR from 'swr';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import TimeAgo from 'react-timeago';
@@ -19,6 +18,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Col, FormControl, Row } from 'react-bootstrap';
+
+import DiscussionResult from '../Interfaces/DiscussionResult';
 
 import CSS from './Discussion.module.scss';
 import AdjustedDate from '../Global/AdjustedDate';

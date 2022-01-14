@@ -190,7 +190,7 @@ export default function DisplayPost() {
                         icon={faTimes}
                       />
 
-                      <Dropdown.Menu className="dropdown-menu dropleft dropdown-menu-right">
+                      <Dropdown.Menu className="dropleft dropdown-menu-right">
                         <Dropdown.Item
                           onClick={() => {
                             (
@@ -290,7 +290,7 @@ export default function DisplayPost() {
                 </Button>
               </div>
               {comment.Replies.map((reply) => (
-                <div className={`top-10 ${CSS.Reply}`}>
+                <div className={`top-10 ${CSS.Reply}`} key={reply.CommentID}>
                   <div className={`top-10 ${CSS.CommentTop}`}>
                     <strong>{reply.Username}</strong> &middot;{' '}
                     <ReactTimeago
@@ -306,7 +306,7 @@ export default function DisplayPost() {
                             icon={faTimes}
                           />
 
-                          <Dropdown.Menu className="dropdown-menu dropleft dropdown-menu-right">
+                          <Dropdown.Menu className="dropleft dropdown-menu-right">
                             <Dropdown.Item
                               onClick={() => {
                                 (

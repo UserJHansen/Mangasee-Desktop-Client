@@ -41,6 +41,8 @@ function StorageHandler() {
         type: 'string',
         format: 'email',
       },
+      Username: { type: 'string' },
+      UserId: { type: 'number' },
       fullPage: {
         type: 'boolean',
         default: false,
@@ -49,13 +51,24 @@ function StorageHandler() {
         type: 'boolean',
         default: false,
       },
+      subPreferences: {
+        type: 'object',
+        properties: {
+          sort: {
+            type: 'string',
+            default: 'Relevance',
+          },
+          fullDisplay: {
+            type: 'boolean',
+            default: true,
+          },
+        },
+      },
       history: { type: 'array', default: [] },
       'mangaAPI-cache': {
         type: 'array',
         default: [],
       },
-      UserId: { type: 'string', default: '' },
-      Username: { type: 'string', default: '' },
     },
   });
 }

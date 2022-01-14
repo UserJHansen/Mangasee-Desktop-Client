@@ -1,0 +1,66 @@
+.BoxLink {
+  background-color: #0000;
+  border-color: #0000;
+
+  padding: 1px 5px;
+}
+
+.SubBox {
+  border-right: none;
+  border-bottom: 2px solid #fff;
+}
+
+@media (min-width: 768px) {
+  .SubBox {
+    border-right: 2px solid #fff;
+    border-bottom: none;
+  }
+}
+
+.SubBox table {
+  width: 100%;
+}
+
+.SubBox .ImageBox {
+  width: 100px;
+  height: 133px;
+  padding: 15px 5px 0 15px;
+  border: none;
+}
+
+.SubBox .TextGray {
+  color: gray;
+}
+
+.SubBox .TextGray a {
+  font-weight: 600;
+}
+
+.NotificationSettings a {
+  margin-right: 15px;
+  color: #bf7e1d;
+  display: inline-block;
+}
+
+.NotificationSettings a:hover {
+  color: orange;
+}
+
+.NotificationSettings a.off {
+  color: #ccc;
+}
+
+.NotificationSettings a:hover {
+  text-decoration: none;
+}
+
+.NotificationSettings span {
+  font-weight: 600;
+}
+
+.Bottom .LoadingMore {
+  text-align: center;
+  padding: 5px;
+  background: #eee;
+  cursor: pointer;
+}

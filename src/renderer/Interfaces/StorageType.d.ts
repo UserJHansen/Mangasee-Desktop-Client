@@ -1,4 +1,5 @@
-import MangaResult from 'renderer/Interfaces/MangaResult';
+import MangaResult from './MangaResult';
+import { SearchType } from '../Subscriptions/Subscriptions';
 
 export default interface StorageType {
   email: string;
@@ -7,5 +8,9 @@ export default interface StorageType {
   fullPage: boolean;
   wasLoggedIn: boolean;
   history: MangaResult[];
+  subPreferences: {
+    sort: SearchType;
+    fullDisplay: boolean;
+  };
   'mangaAPI-cache': [unknown, unknown][];
 }

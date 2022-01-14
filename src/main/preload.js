@@ -8,7 +8,8 @@ function StorageHandler() {
         type: 'string',
         format: 'email',
       },
-      userId: { type: 'number' },
+      Username: { type: 'string' },
+      UserId: { type: 'number', default: 0 },
       fullPage: {
         type: 'boolean',
         default: false,
@@ -16,6 +17,19 @@ function StorageHandler() {
       wasLoggedIn: {
         type: 'boolean',
         default: false,
+      },
+      subPreferences: {
+        type: 'object',
+        properties: {
+          sort: {
+            type: 'string',
+            default: 'Relevance',
+          },
+          fullDisplay: {
+            type: 'boolean',
+            default: true,
+          },
+        },
       },
       history: { type: 'array', default: [] },
       'mangaAPI-cache': {

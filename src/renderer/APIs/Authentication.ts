@@ -1,6 +1,7 @@
 import axios from 'axios';
-import DiscussionResult from 'renderer/Interfaces/DiscussionResult';
 import { ScopedMutator } from 'swr/dist/types';
+
+import DiscussionResult from '../Interfaces/DiscussionResult';
 
 export default class Authentication {
   static async attemptLogin(

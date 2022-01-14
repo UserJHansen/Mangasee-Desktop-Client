@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import useSWR, { mutate } from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 
 import {
   faAngleDoubleRight,
@@ -27,6 +27,7 @@ export default function Home() {
   const {
     data: { Recommendations, Hot, Latest, SubFeed, History, NewSeries, Subbed },
   } = useSWR('/api/set/home');
+  const { mutate } = useSWRConfig();
 
   const Recommendation =
     Recommendations[Math.floor(Math.random() * Recommendations.length)];
