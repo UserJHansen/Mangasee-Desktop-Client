@@ -1,4 +1,6 @@
-export default interface MangaResult {
+import FeedType from './FeedType';
+
+export default interface MangaResult extends FeedType {
   Chapter: string;
   Date: string;
   IndexName: string;

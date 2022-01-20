@@ -13,8 +13,10 @@ import { faClock, faFile } from '@fortawesome/free-regular-svg-icons';
 import CSS from './card.module.scss';
 
 import { chapterURLEncode, ChapterDisplay } from './DisplayTools';
-import MangaResult from '../Interfaces/MangaResult';
 import AdjustedDate from './AdjustedDate';
+
+import MangaResult from '../Interfaces/MangaResult';
+import FeedType from '../Interfaces/FeedType';
 
 interface ThinCardProps {
   children: Array<string | number> | string;
@@ -117,6 +119,42 @@ export function WideCard({ manga, subArr, hotArr }: WideCardProps) {
             <div className={CSS.smallertext}>
               <FontAwesomeIcon icon={faClock} />{' '}
               <TimeAgo date={new AdjustedDate(manga.Date)} />
+            </div>
+          </Link>
+        </Col>
+      </Row>
+    </Col>
+  );
+}
+
+export function FeedCard({ manga }: { manga: FeedType }) {
+  return (
+    <Col md={6} lg={4}>
+      <Row className={CSS.largecard}>
+        <Col xs={4} className={CSS.largeimage}>
+          <Link to={`/manga/${manga.IndexName}`} title={manga.SeriesName}>
+            <img
+              src={`https://cover.nep.li/cover/${manga.IndexName}.jpg`}
+              alt="Cover"
+              style={{ maxWidth: '100%' }}
+            />
+          </Link>
+        </Col>
+        <Col xs={8} className={CSS.textcontainer}>
+          <Link
+            to={`/read/${manga.IndexName}${chapterURLEncode(manga.Chapter)}`}
+            title={`${manga.SeriesName} Chapter ${ChapterDisplay(
+              manga.Chapter
+            )}`}
+          >
+            <div className={CSS.name}>{manga.SeriesName}</div>
+            <div className={CSS.smallertext}>
+              <FontAwesomeIcon icon={faFile} /> Chapter{' '}
+              {ChapterDisplay(manga.Chapter)}
+            </div>
+            <div className={CSS.smallertext}>
+              <FontAwesomeIcon icon={faClock} />{' '}
+              <TimeAgo date={new Date(manga.Date)} />
             </div>
           </Link>
         </Col>

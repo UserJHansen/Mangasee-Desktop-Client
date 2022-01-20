@@ -114,6 +114,10 @@ export default function mangaAPIFetcher(query: string) {
       return axios('/search/search.php').then((results) => ({
         Directory: results.data,
       }));
+    case '/api/set/feed':
+      return axios('/feed.php').then((results) => ({
+        Feed: JSON.parse(<string>FindVariable('vm.FeedJSON', results.data)),
+      }));
     case '/api/set/Discussion':
       return axios('/discussion/index.get.php').then((results) => ({
         Discussions: results.data.val,

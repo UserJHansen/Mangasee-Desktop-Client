@@ -24,6 +24,7 @@ import Discussion from './Discussion/Discussion';
 import Search from './Search/Search';
 import Settings from './Settings/Settings';
 import Subscriptions from './Subscriptions/Subscriptions';
+import Feed from './Feed/Feed';
 
 export default function Router() {
   const { data: isLoggedIn } = useSWR('/api/loggedIn');
@@ -52,6 +53,7 @@ export default function Router() {
                   <Route path="/Bookmarks" element={<Bookmarks />} />
                   <Route path="/Settings" element={<Settings />} />
                   <Route path="/Subscriptions" element={<Subscriptions />} />
+                  <Route path="/Feed" element={<Feed />} />
                   <Route path="/" element={<Navigate to="/Home" />} />
                 </Routes>
               </Container>
