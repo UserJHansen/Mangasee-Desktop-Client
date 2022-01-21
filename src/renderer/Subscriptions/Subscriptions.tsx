@@ -222,7 +222,7 @@ export default function Subscriptions() {
         </Modal.Footer>
       </Modal>
       {Subbed.length === 0 ? (
-        <>You don&apos;t have any subscription yet.</>
+        <>You don&apos;t have any subscriptions yet.</>
       ) : (
         <>
           <InputGroup className="top-5 bottom-5">

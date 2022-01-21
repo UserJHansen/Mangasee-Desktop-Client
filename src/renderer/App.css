@@ -25,6 +25,11 @@ body {
   max-height: 100%;
   font-size: 2vw;
 }
+/*
+.btn-link {
+  font-weight: 400;
+  text-decoration: none;
+} */
 
 .no-scroll {
   overflow: scroll;

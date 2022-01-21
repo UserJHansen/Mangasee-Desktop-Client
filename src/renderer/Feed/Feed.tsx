@@ -1,5 +1,3 @@
-import React from 'react';
-
 import useSWR from 'swr';
 
 import { faRss } from '@fortawesome/free-solid-svg-icons';

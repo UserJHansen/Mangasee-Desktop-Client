@@ -3,6 +3,7 @@ import ReCAPTCHA from '../Global/reCaptcha';
 import MangaResult from '../Interfaces/MangaResult';
 
 import { FindVariable } from '../Global/getJsVar';
+import BookmarkResult from '../Interfaces/BookmarkResult';
 
 // Based on Demo from https://swr.vercel.app/docs/advanced/cache#localstorage-based-persistent-cache
 export function storeBackupProvider() {
@@ -122,6 +123,10 @@ export default function mangaAPIFetcher(query: string) {
       return axios('/discussion/index.get.php').then((results) => ({
         Discussions: results.data.val,
       }));
+    case '/api/set/Bookmarks':
+      return axios('/user/bookmark.get.php').then((results) => ({
+        Bookmarks: results.data.val,
+      }));
     case '/api/set/Subscriptions':
       return Promise.all([
         axios('/user/subscription.php'),
@@ -222,7 +227,8 @@ export default function mangaAPIFetcher(query: string) {
       const args = /\/delete\/((?:(?:.*)){1,})/.exec(query)?.[1].split('/');
       if (
         typeof args === 'undefined' ||
-        (args.length < 2 && args[0] !== 'Subscriptions')
+        (args.length < 2 &&
+          !(args[0] === 'Subscriptions' || args[0] === 'Bookmarks'))
       )
         return undefined;
       const selector = args[0];
@@ -258,6 +264,19 @@ export default function mangaAPIFetcher(query: string) {
           return axios
             .post('/user/subscription.purge.php')
             .then((results) => results.data.val);
+        case 'Bookmark': {
+          const manga: BookmarkResult = JSON.parse(window.atob(args[1]));
+
+          return axios
+            .post('/user/bookmark.remove.php', {
+              Chapter: manga.Chapter,
+              IndexName: manga.IndexName,
+              Page: manga.Page,
+            })
+            .then((results) => results.data.val);
+        }
+        case 'Bookmarks':
+          return axios.post('/user/bookmark.clear.php', { Action: 'clear' });
         // no default
       }
       return undefined;

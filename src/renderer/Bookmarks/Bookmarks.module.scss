@@ -1,0 +1,73 @@
+.Chapter {
+  margin: 10px 0px 5px 0px !important;
+  padding: 0px !important;
+  background: #f2f2f2;
+}
+
+.Chapter .Image {
+  margin: 0px !important;
+  padding: 0px !important;
+  max-width: 100px !important;
+  height: 130px !important;
+  overflow: hidden;
+  position: relative;
+  background: black;
+}
+
+.Chapter .Image img {
+  max-width: 100%;
+}
+
+.SimpleNav {
+  margin: 0px !important;
+  padding: 0px !important;
+  max-width: 100px !important;
+  height: 130px !important;
+  overflow: hidden;
+  position: relative;
+  background: #f2f2f2;
+  text-align: right;
+  max-height: 50px !important;
+}
+
+.Chapter .Label {
+  margin: 0px !important;
+  padding: 8px 15px !important;
+  background: #f2f2f2;
+  min-width: calc(100% - 100px) !important;
+}
+
+.Chapter .SeriesName {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Chapter .ChapterLabel .fa-file {
+  margin-right: 4px;
+}
+
+.Chapter .ChapterLabel,
+.Chapter .DateLabel {
+  color: gray;
+  font-size: 14px;
+}
+
+.Chapter .Clipped {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Chapter strong {
+  font-weight: 600;
+}
+
+.Chapter .btn-link {
+  color: #ccc;
+}
+
+.Chapter .btn-link:hover {
+  color: gray;
+}
